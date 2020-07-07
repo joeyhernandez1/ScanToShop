@@ -76,8 +76,7 @@ Original App Design Project - README Template
    * Seller website 
 
 ## Wireframes
-[Add picture of your hand sketched wireframes in this section]
-<img src="YOUR_WIREFRAME_IMAGE_URL" width=600>
+<img src="https://github.com/joeyhernandez1/ScanToShop/blob/master/wireframe_scantoshop.png" width=600>
 
 ### [BONUS] Digital Wireframes & Mockups
 
