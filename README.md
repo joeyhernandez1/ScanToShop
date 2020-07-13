@@ -83,10 +83,18 @@ Original App Design Project - README Template
 ### [BONUS] Interactive Prototype
 
 ## Schema 
-[This section will be completed in Unit 9]
+
 ### Models
-[Add table of models]
+
+#### Deal
+| Property       | Type         |Description                                |
+| ------------- |:-------------:| -----------------------------------------:|
+| seller        | String        | Name of the seller for the particular deal|
+| image         | File          | Image of the particular item.             |
+| description   | String        | Bried description of the item             |
+| name          | String        | Name of the item looking deals for        |
+| seller URL    | URL           | URL to buy the item                       |
+| description   | String        | Bried description of the item             |
+
 ### Networking
-- [Add list of network requests by screen ]
-- [Create basic snippets for each Parse network request]
-- [OPTIONAL: List endpoints if using existing API such as Yelp]
+- (Read/GET) Query all deals for the item scanned
