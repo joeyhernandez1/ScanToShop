@@ -1,23 +1,21 @@
 //
-//  ViewController.m
+//  SettingsViewController.m
 //  ScanToShop
 //
 //  Created by Joey R. Hernandez Perez on 7/13/20.
 //  Copyright © 2020 joeyrhernandez1. All rights reserved.
 //
 
-#import "ViewController.h"
+#import "SettingsViewController.h"
 
-@interface ViewController ()
+@interface SettingsViewController ()
 
 @end
 
-@implementation ViewController
+@implementation SettingsViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    // Do any additional setup after loading the view.
 }
-
 
 @end

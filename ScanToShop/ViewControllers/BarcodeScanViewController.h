@@ -1,5 +1,5 @@
 //
-//  ViewController.h
+//  BarcodeScanViewController.h
 //  ScanToShop
 //
 //  Created by Joey R. Hernandez Perez on 7/13/20.
@@ -8,8 +8,10 @@
 
 #import <UIKit/UIKit.h>
 
-@interface ViewController : UIViewController
+NS_ASSUME_NONNULL_BEGIN
 
+@interface BarcodeScanViewController : UIViewController
 
 @end
 
+NS_ASSUME_NONNULL_END

@@ -9,13 +9,20 @@
 /* Begin PBXBuildFile section */
 		4E19224D24BD0A1700B08EE6 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 4E19224C24BD0A1700B08EE6 /* AppDelegate.m */; };
 		4E19225024BD0A1700B08EE6 /* SceneDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 4E19224F24BD0A1700B08EE6 /* SceneDelegate.m */; };
-		4E19225324BD0A1700B08EE6 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4E19225224BD0A1700B08EE6 /* ViewController.m */; };
 		4E19225624BD0A1700B08EE6 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4E19225424BD0A1700B08EE6 /* Main.storyboard */; };
 		4E19225824BD0A1800B08EE6 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4E19225724BD0A1800B08EE6 /* Assets.xcassets */; };
 		4E19225B24BD0A1800B08EE6 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4E19225924BD0A1800B08EE6 /* LaunchScreen.storyboard */; };
 		4E19225E24BD0A1800B08EE6 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 4E19225D24BD0A1800B08EE6 /* main.m */; };
 		4E19226824BD0A1900B08EE6 /* ScanToShopTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 4E19226724BD0A1900B08EE6 /* ScanToShopTests.m */; };
 		4E19227324BD0A1900B08EE6 /* ScanToShopUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = 4E19227224BD0A1900B08EE6 /* ScanToShopUITests.m */; };
+		4E19228324BD1B5B00B08EE6 /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4E19228224BD1B5B00B08EE6 /* LoginViewController.m */; };
+		4E19228624BD1B8300B08EE6 /* RegisterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4E19228524BD1B8300B08EE6 /* RegisterViewController.m */; };
+		4E19228924BD1BDE00B08EE6 /* BarcodeScanViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4E19228824BD1BDE00B08EE6 /* BarcodeScanViewController.m */; };
+		4E19228C24BD1BF800B08EE6 /* ProfileViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4E19228B24BD1BF800B08EE6 /* ProfileViewController.m */; };
+		4E19228F24BD1C1600B08EE6 /* SettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4E19228E24BD1C1600B08EE6 /* SettingsViewController.m */; };
+		4E19229224BD1C2D00B08EE6 /* DealsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4E19229124BD1C2D00B08EE6 /* DealsViewController.m */; };
+		4E19229524BD1C5C00B08EE6 /* DetailsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4E19229424BD1C5C00B08EE6 /* DetailsViewController.m */; };
+		4E19229924BE368900B08EE6 /* DealCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 4E19229824BE368900B08EE6 /* DealCell.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -41,8 +48,6 @@
 		4E19224C24BD0A1700B08EE6 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
 		4E19224E24BD0A1700B08EE6 /* SceneDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SceneDelegate.h; sourceTree = "<group>"; };
 		4E19224F24BD0A1700B08EE6 /* SceneDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SceneDelegate.m; sourceTree = "<group>"; };
-		4E19225124BD0A1700B08EE6 /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
-		4E19225224BD0A1700B08EE6 /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
 		4E19225524BD0A1700B08EE6 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		4E19225724BD0A1800B08EE6 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		4E19225A24BD0A1800B08EE6 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -54,6 +59,22 @@
 		4E19226E24BD0A1900B08EE6 /* ScanToShopUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ScanToShopUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		4E19227224BD0A1900B08EE6 /* ScanToShopUITests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ScanToShopUITests.m; sourceTree = "<group>"; };
 		4E19227424BD0A1900B08EE6 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		4E19228124BD1B5B00B08EE6 /* LoginViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LoginViewController.h; sourceTree = "<group>"; };
+		4E19228224BD1B5B00B08EE6 /* LoginViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LoginViewController.m; sourceTree = "<group>"; };
+		4E19228424BD1B8300B08EE6 /* RegisterViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RegisterViewController.h; sourceTree = "<group>"; };
+		4E19228524BD1B8300B08EE6 /* RegisterViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RegisterViewController.m; sourceTree = "<group>"; };
+		4E19228724BD1BDE00B08EE6 /* BarcodeScanViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BarcodeScanViewController.h; sourceTree = "<group>"; };
+		4E19228824BD1BDE00B08EE6 /* BarcodeScanViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BarcodeScanViewController.m; sourceTree = "<group>"; };
+		4E19228A24BD1BF800B08EE6 /* ProfileViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ProfileViewController.h; sourceTree = "<group>"; };
+		4E19228B24BD1BF800B08EE6 /* ProfileViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ProfileViewController.m; sourceTree = "<group>"; };
+		4E19228D24BD1C1600B08EE6 /* SettingsViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SettingsViewController.h; sourceTree = "<group>"; };
+		4E19228E24BD1C1600B08EE6 /* SettingsViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SettingsViewController.m; sourceTree = "<group>"; };
+		4E19229024BD1C2D00B08EE6 /* DealsViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DealsViewController.h; sourceTree = "<group>"; };
+		4E19229124BD1C2D00B08EE6 /* DealsViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DealsViewController.m; sourceTree = "<group>"; };
+		4E19229324BD1C5C00B08EE6 /* DetailsViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DetailsViewController.h; sourceTree = "<group>"; };
+		4E19229424BD1C5C00B08EE6 /* DetailsViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DetailsViewController.m; sourceTree = "<group>"; };
+		4E19229724BE368900B08EE6 /* DealCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DealCell.h; sourceTree = "<group>"; };
+		4E19229824BE368900B08EE6 /* DealCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DealCell.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -104,12 +125,12 @@
 		4E19224A24BD0A1700B08EE6 /* ScanToShop */ = {
 			isa = PBXGroup;
 			children = (
+				4E19229624BE366C00B08EE6 /* Views */,
+				4E19228024BD1AAD00B08EE6 /* ViewControllers */,
 				4E19224B24BD0A1700B08EE6 /* AppDelegate.h */,
 				4E19224C24BD0A1700B08EE6 /* AppDelegate.m */,
 				4E19224E24BD0A1700B08EE6 /* SceneDelegate.h */,
 				4E19224F24BD0A1700B08EE6 /* SceneDelegate.m */,
-				4E19225124BD0A1700B08EE6 /* ViewController.h */,
-				4E19225224BD0A1700B08EE6 /* ViewController.m */,
 				4E19225424BD0A1700B08EE6 /* Main.storyboard */,
 				4E19225724BD0A1800B08EE6 /* Assets.xcassets */,
 				4E19225924BD0A1800B08EE6 /* LaunchScreen.storyboard */,
@@ -135,6 +156,36 @@
 				4E19227424BD0A1900B08EE6 /* Info.plist */,
 			);
 			path = ScanToShopUITests;
+			sourceTree = "<group>";
+		};
+		4E19228024BD1AAD00B08EE6 /* ViewControllers */ = {
+			isa = PBXGroup;
+			children = (
+				4E19228124BD1B5B00B08EE6 /* LoginViewController.h */,
+				4E19228224BD1B5B00B08EE6 /* LoginViewController.m */,
+				4E19228424BD1B8300B08EE6 /* RegisterViewController.h */,
+				4E19228524BD1B8300B08EE6 /* RegisterViewController.m */,
+				4E19228724BD1BDE00B08EE6 /* BarcodeScanViewController.h */,
+				4E19228824BD1BDE00B08EE6 /* BarcodeScanViewController.m */,
+				4E19228A24BD1BF800B08EE6 /* ProfileViewController.h */,
+				4E19228B24BD1BF800B08EE6 /* ProfileViewController.m */,
+				4E19228D24BD1C1600B08EE6 /* SettingsViewController.h */,
+				4E19228E24BD1C1600B08EE6 /* SettingsViewController.m */,
+				4E19229024BD1C2D00B08EE6 /* DealsViewController.h */,
+				4E19229124BD1C2D00B08EE6 /* DealsViewController.m */,
+				4E19229324BD1C5C00B08EE6 /* DetailsViewController.h */,
+				4E19229424BD1C5C00B08EE6 /* DetailsViewController.m */,
+			);
+			path = ViewControllers;
+			sourceTree = "<group>";
+		};
+		4E19229624BE366C00B08EE6 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				4E19229724BE368900B08EE6 /* DealCell.h */,
+				4E19229824BE368900B08EE6 /* DealCell.m */,
+			);
+			path = Views;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -267,10 +318,17 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				4E19225324BD0A1700B08EE6 /* ViewController.m in Sources */,
+				4E19228624BD1B8300B08EE6 /* RegisterViewController.m in Sources */,
+				4E19229524BD1C5C00B08EE6 /* DetailsViewController.m in Sources */,
+				4E19228C24BD1BF800B08EE6 /* ProfileViewController.m in Sources */,
+				4E19228F24BD1C1600B08EE6 /* SettingsViewController.m in Sources */,
 				4E19224D24BD0A1700B08EE6 /* AppDelegate.m in Sources */,
 				4E19225E24BD0A1800B08EE6 /* main.m in Sources */,
+				4E19228924BD1BDE00B08EE6 /* BarcodeScanViewController.m in Sources */,
 				4E19225024BD0A1700B08EE6 /* SceneDelegate.m in Sources */,
+				4E19229224BD1C2D00B08EE6 /* DealsViewController.m in Sources */,
+				4E19228324BD1B5B00B08EE6 /* LoginViewController.m in Sources */,
+				4E19229924BE368900B08EE6 /* DealCell.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
