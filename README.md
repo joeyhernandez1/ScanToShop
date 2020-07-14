@@ -58,9 +58,8 @@ Original App Design Project - README Template
 
 **Tab Navigation** (Tab to Screen)
 
-* [fill out your first tab]
-* [fill out your second tab]
-* [fill out your third tab]
+* Barcode Scan
+* Profile
 
 **Flow Navigation** (Screen to Screen)
 
@@ -68,6 +67,8 @@ Original App Design Project - README Template
    * Creation
 * Registration Screen
    * Creation
+* Profile
+   * Settings
 * Creation
    * Stream 
 * Stream
@@ -76,7 +77,7 @@ Original App Design Project - README Template
    * Seller website 
 
 ## Wireframes
-<img src="https://github.com/joeyhernandez1/ScanToShop/blob/master/wireframe_scantoshop.png" width=600>
+<img src="https://imgur.com/kdtt6r5.jpg" width=600>
 
 ### [BONUS] Digital Wireframes & Mockups
 
