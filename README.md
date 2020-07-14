@@ -89,12 +89,30 @@ Original App Design Project - README Template
 #### Deal
 | Property       | Type         |Description                                |
 | ------------- |:-------------:| -----------------------------------------:|
-| seller        | String        | Name of the seller for the particular deal|
-| image         | File          | Image of the particular item.             |
-| description   | String        | Bried description of the item             |
-| name          | String        | Name of the item looking deals for        |
-| seller URL    | URL           | URL to buy the item                       |
-| description   | String        | Bried description of the item             |
+| Seller Platform        | String        | Name of the seller for the particular deal|
+| Image         | URL           | Image of the particular item.             |
+| Description   | String        | Bried description of the item             |
+| Name          | String        | Name of the item looking deals for        |
+| Item URL      | URL           | URL to buy the item                       |
+| Description   | String        | Bried description of the item             |
+
+#### User
+| Property       | Type         |Description                                |
+| ------------- |:-------------:| -----------------------------------------:|
+| Name          | String        | Full name of the user                     |
+| Image         | URL           | Profile picture                           |
+| Email         | String        | User email                                |
+| Password      | String        | Password of the user's account            |
+| Deal          | Array         | Array of deals saved by the user          |
+
+#### Seller
+| Property       | Type         |Description                                |
+| ------------- |:-------------:| -----------------------------------------:|
+| Name          | String        | Full name of the user                     |
+| Image         | URL           | Profile picture                           |
+| Email         | String        | User email                                |
+| Password      | String        | Password of the user's account            |
+| Deal          | Array         | Array of deals saved by the user          |
 
 ### Networking
 - (Read/GET) Query all deals for the item scanned
