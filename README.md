@@ -95,7 +95,6 @@ Original App Design Project - README Template
 | Description   | String        | Bried description of the item             |
 | Name          | String        | Name of the item looking deals for        |
 | Item URL      | URL           | URL to buy the item                       |
-| Description   | String        | Bried description of the item             |
 
 #### User
 | Property       | Type         |Description                                |
