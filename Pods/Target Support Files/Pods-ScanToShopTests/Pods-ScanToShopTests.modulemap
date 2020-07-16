@@ -1,0 +1,6 @@
+framework module Pods_ScanToShopTests {
+  umbrella header "Pods-ScanToShopTests-umbrella.h"
+
+  export *
+  module * { export * }
+}
