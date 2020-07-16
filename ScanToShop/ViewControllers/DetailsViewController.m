@@ -24,4 +24,9 @@
     [super viewDidLoad];
 }
 
+- (IBAction)onBuyTap:(id)sender {
+}
+
+- (IBAction)onSaveTap:(id)sender {
+}
 @end

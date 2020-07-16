@@ -18,4 +18,10 @@
     [super viewDidLoad];
 }
 
+- (IBAction)onLogoutTap:(id)sender {
+}
+
+- (IBAction)onDeleteTap:(id)sender {
+}
+
 @end

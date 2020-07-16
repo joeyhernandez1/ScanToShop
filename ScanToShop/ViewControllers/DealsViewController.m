@@ -7,8 +7,9 @@
 //
 
 #import "DealsViewController.h"
+#import "DealCell.h"
 
-@interface DealsViewController ()
+@interface DealsViewController () <UITableViewDelegate, UITableViewDataSource>
 
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 
@@ -18,6 +19,17 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    self.tableView.delegate = self;
+    self.tableView.dataSource = self;
+}
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+    DealCell *cell = [tableView dequeueReusableCellWithIdentifier:@"DealCell"];
+    return cell;
+}
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+    return 20;
 }
 
 @end

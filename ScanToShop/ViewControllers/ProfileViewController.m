@@ -7,8 +7,9 @@
 //
 
 #import "ProfileViewController.h"
+#import "DealCell.h"
 
-@interface ProfileViewController ()
+@interface ProfileViewController () <UITableViewDelegate, UITableViewDataSource>
 
 @property (weak, nonatomic) IBOutlet UIImageView *profileImageView;
 @property (weak, nonatomic) IBOutlet UILabel *nameLabel;
@@ -22,6 +23,17 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    self.tableView.delegate = self;
+    self.tableView.dataSource = self;
+}
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+    DealCell *cell = [tableView dequeueReusableCellWithIdentifier:@"ProfileDealCell"];
+    return cell;
+}
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+    return 20;
 }
 
 @end
