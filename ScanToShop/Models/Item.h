@@ -13,9 +13,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface Item : PFObject<PFSubclassing>
 
-@property (nonatomic, strong) PFFileObject *itemImage;
-@property (nonatomic, strong) NSString *itemDescription;
-@property (nonatomic, strong) NSString *itemName;
+@property (nonatomic, strong) PFFileObject *image;
+@property (nonatomic, strong) NSString *information;
+@property (nonatomic, strong) NSString *name;
 @property (nonatomic, strong) NSString *barcode;
 
 @end

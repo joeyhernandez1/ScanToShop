@@ -11,26 +11,12 @@
 @implementation Item
 
 @dynamic barcode;
-@dynamic itemName;
-@dynamic itemImage;
-@dynamic itemDescription;
+@dynamic name;
+@dynamic image;
+@dynamic information;
 
 + (nonnull NSString *)parseClassName {
     return @"Item";
-}
-
-+ (PFFileObject *)getPFFileFromImage: (UIImage * _Nullable)image {
- 
-    if (!image) {
-        return nil;
-    }
-    
-    NSData *imageData = UIImagePNGRepresentation(image);
-    if (!imageData) {
-        return nil;
-    }
-    
-    return [PFFileObject fileObjectWithName:@"image.png" data:imageData];
 }
 
 @end
