@@ -9,16 +9,17 @@
 #import "RegisterViewController.h"
 #import "AlertManager.h"
 #import "DatabaseManager.h"
-#import <Parse/Parse.h>
+#import "User.h"
 
 @interface RegisterViewController () <UIImagePickerControllerDelegate,
                                       UINavigationControllerDelegate>
 
 @property (weak, nonatomic) IBOutlet UIImageView *profileImage;
-@property (weak, nonatomic) IBOutlet UITextField *nameField;
+@property (weak, nonatomic) IBOutlet UITextField *firstNameField;
 @property (weak, nonatomic) IBOutlet UITextField *emailField;
 @property (weak, nonatomic) IBOutlet UITextField *usernameField;
 @property (weak, nonatomic) IBOutlet UITextField *passwordField;
+@property (weak, nonatomic) IBOutlet UITextField *lastNameField;
 
 @end
 
@@ -26,7 +27,6 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.passwordField.secureTextEntry = YES;
 }
 
 - (IBAction)onViewTap:(id)sender {
@@ -45,13 +45,7 @@
     
     UIImage *originalImage = info[UIImagePickerControllerOriginalImage];
     UIImage *editedImage = info[UIImagePickerControllerEditedImage];
-    
-    if (originalImage) {
-        [self updateProfileImage:originalImage];
-    }
-    else if (editedImage) {
-        [self updateProfileImage:editedImage];
-    }
+    [self updateProfileImage: originalImage ?: editedImage];
 
     [self dismissViewControllerAnimated:YES completion:nil];
 }
@@ -94,42 +88,70 @@
 }
 
 - (void)registerUser {
-    PFUser *newUser = [PFUser user];
     
     if ([self areUserInputFieldsEmpty]) {
-        [AlertManager loginAlert:@"" ViewController:self];
+        [AlertManager loginAlert:LoginErrorMissingInput ErrorString:nil ViewController:self];
         return;
     }
     
-    newUser.username = self.usernameField.text;
-    newUser.password = self.passwordField.text;
-    newUser.email = self.emailField.text;
-    newUser[@"name"] = self.nameField.text;
-    newUser[@"image"] = [DatabaseManager getPFFileFromImage:self.profileImage.image];
+    if ([self fieldsContainSpacesOrNewlines]) {
+        [AlertManager loginAlert:SpaceNewlineError ErrorString:nil ViewController:self];
+        return;
+    }
     
-    [newUser signUpInBackgroundWithBlock:^(BOOL succeeded, NSError * error) {
-        if (error) {
-            NSLog(@"Error: %@", error.localizedDescription);
-            [AlertManager loginAlert:error.localizedDescription ViewController:self];
-        } else {
-            NSLog(@"User registered successfully");
-            [self performSegueWithIdentifier:@"registerSegue" sender:nil];
-            self.usernameField.text = @"";
-            self.passwordField.text = @"";
-            self.emailField.text = @"";
-            self.nameField.text = @"";
-            self.profileImage.image = [UIImage imageNamed:@"person.circle.fill"];
-        }
-    }];
+    if (![self containsValidPassword:self.passwordField.text]) {
+        [AlertManager loginAlert:PasswordError ErrorString:nil ViewController:self];
+        return;
+    }
+    
+    User *user = [[User alloc] init];
+    user.username = self.usernameField.text;
+    user.password = self.passwordField.text;
+    user.email = self.emailField.text;
+    user.firstName = self.firstNameField.text;
+    user.lastName = self.lastNameField.text;
+    user.profileImageData = UIImagePNGRepresentation(self.profileImage.image);
+    
+    if ([DatabaseManager registerUserInParse:self User:user]) {
+        [self setFieldsToDefault];
+    }
+}
+
+-(void) setFieldsToDefault {
+    [self performSegueWithIdentifier:@"registerSegue" sender:nil];
+    self.usernameField.text = @"";
+    self.passwordField.text = @"";
+    self.emailField.text = @"";
+    self.firstNameField.text = @"";
+    self.lastNameField.text = @"";
+    self.profileImage.image = [UIImage imageNamed:@"person.circle.fill"];
 }
 
 -(BOOL) areUserInputFieldsEmpty {
-    return [self.usernameField.text isEqual:@""] ||
-           [self.passwordField.text isEqual:@""] ||
-           [self.nameField.text isEqual:@""]     ||
+    return [self.usernameField.text isEqual:@""]  ||
+           [self.passwordField.text isEqual:@""]  ||
+           [self.firstNameField.text isEqual:@""] ||
+           [self.lastNameField.text isEqual:@""] ||
            [self.emailField.text isEqual:@""];
 }
 
+-(BOOL)fieldsContainSpacesOrNewlines {
+    NSCharacterSet *set = [NSCharacterSet whitespaceAndNewlineCharacterSet];
+    NSCharacterSet *newLineSet = [NSCharacterSet newlineCharacterSet];
+    
+    return [[self.usernameField.text stringByTrimmingCharactersInSet:set] length] < [self.usernameField.text length]   ||
+           [[self.passwordField.text stringByTrimmingCharactersInSet:set] length] < [self.passwordField.text length]   ||
+           [[self.firstNameField.text stringByTrimmingCharactersInSet:set] length] < [self.firstNameField.text length] ||
+           [[self.emailField.text stringByTrimmingCharactersInSet:set] length] < [self.emailField.text length]         ||
+           [[self.lastNameField.text stringByTrimmingCharactersInSet:newLineSet] length] < [self.lastNameField.text length];
+}
 
+- (BOOL)containsValidPassword:(NSString*)password {
+     NSString* const pattern = @"^.*(?=.{8,})(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9]).*$";
+     NSRegularExpression* regex = [[NSRegularExpression alloc] initWithPattern:pattern options:0 error:nil];
+     NSRange range = NSMakeRange(0, [password length]);
+     
+    return [regex numberOfMatchesInString:password options:0 range:range] > 0;
+}
 
 @end

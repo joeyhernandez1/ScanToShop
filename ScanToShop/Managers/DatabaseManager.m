@@ -7,16 +7,50 @@
 //
 
 #import "DatabaseManager.h"
+#import "AlertManager.h"
 
 @implementation DatabaseManager
 
-+ (PFFileObject *)getPFFileFromImage: (UIImage * _Nullable)image {
- 
-    if (!image) {
-        return nil;
-    }
++(BOOL) registerUserInParse:(UIViewController *)vc User:(User *)user {
+    PFUser *newUser = [PFUser new];
+    newUser.username = user.username;
+    newUser.password = user.password;
+    newUser.email = user.email;
+    newUser[@"first_name"] = user.firstName;
+    newUser[@"last_name"] = user.lastName;
+    newUser[@"image"] = [DatabaseManager getPFFileFromImageData:user.profileImageData];
     
-    NSData *imageData = UIImagePNGRepresentation(image);
+    __block BOOL success;
+    [newUser signUpInBackgroundWithBlock:^(BOOL succeeded, NSError * error) {
+        if (error) {
+            NSLog(@"Error: %@", error.localizedDescription);
+            [AlertManager loginAlert:ParseBackendError ErrorString:error.localizedDescription ViewController:vc];
+        }
+        else {
+            NSLog(@"User registered successfully");
+            [vc performSegueWithIdentifier:@"registerSegue" sender:nil];
+        }
+        success = succeeded;
+    }];
+    return success;
+}
+
++(BOOL) loginWithParse:(UIViewController *)vc Username:(NSString *)username Password:(NSString *)password {
+    __block BOOL success = NO;
+    [PFUser logInWithUsernameInBackground:username password:password block:^(PFUser * user, NSError *  error) {
+        if (error) {
+            NSLog(@"User log in failed: %@", error.localizedDescription);
+            [AlertManager loginAlert:ParseBackendError ErrorString: error.localizedDescription ViewController:vc];
+        } else {
+            NSLog(@"User logged in successfully");
+            [vc performSegueWithIdentifier:@"loginSegue" sender:nil];
+            success = YES;
+        }
+    }];
+    return success;
+}
+
++(PFFileObject *) getPFFileFromImageData: (NSData *)imageData {
     if (!imageData) {
         return nil;
     }

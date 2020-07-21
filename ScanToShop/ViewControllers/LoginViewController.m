@@ -8,7 +8,7 @@
 
 #import "LoginViewController.h"
 #import "AlertManager.h"
-#import <Parse/Parse.h>
+#import "DatabaseManager.h"
 
 @interface LoginViewController ()
 
@@ -21,7 +21,6 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.passwordField.secureTextEntry = YES;
 }
 
 - (IBAction)onViewTap:(id)sender {
@@ -39,28 +38,18 @@
 
 - (void)loginUser {
     if ([self areUserInputFieldsEmpty]) {
-        [AlertManager loginAlert:@"" ViewController:self];
+        [AlertManager loginAlert:LoginErrorMissingInput ErrorString:nil ViewController:self];
         return;
     }
     
     NSString *username = self.usernameField.text;
     NSString *password = self.passwordField.text;
     
-    [PFUser logInWithUsernameInBackground:username password:password block:^(PFUser * user, NSError *  error) {
-        if (error) {
-            NSLog(@"User log in failed: %@", error.localizedDescription);
-            [AlertManager loginAlert:error.localizedDescription ViewController:self];
-        } else {
-            NSLog(@"User logged in successfully");
-            [self performSegueWithIdentifier:@"loginSegue" sender:nil];
-        }
-    }];
+    [DatabaseManager loginWithParse:self Username:username Password:password];
 }
 
 -(BOOL) areUserInputFieldsEmpty {
     return [self.usernameField.text isEqual:@""] || [self.passwordField.text isEqual:@""];
 }
-
-
 
 @end

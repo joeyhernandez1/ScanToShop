@@ -10,9 +10,16 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface AlertManager : UIViewController
+@interface AlertManager : NSObject
 
-+ (void)loginAlert:(NSString *)errorString ViewController:(UIViewController *) vc;
+typedef NS_ENUM(NSInteger, errorType) {
+    LoginErrorMissingInput,
+    ParseBackendError,
+    PasswordError,
+    SpaceNewlineError
+};
+
++ (void)loginAlert:(errorType)error ErrorString:(nullable NSString *) errorString ViewController:(UIViewController *)vc;
 
 @end
 

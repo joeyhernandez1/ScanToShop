@@ -7,13 +7,16 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "User.h"
 #import <Parse/Parse.h>
 
 NS_ASSUME_NONNULL_BEGIN
 
 @interface DatabaseManager : NSObject
 
-+ (PFFileObject *)getPFFileFromImage: (UIImage * _Nullable)image;
++(BOOL) registerUserInParse:(UIViewController *)vc User:(User *)user;
++(BOOL) loginWithParse:(UIViewController *)vc Username:(NSString *)username Password:(NSString *)password;
++ (PFFileObject *)getPFFileFromImageData: (NSData *)imageData;
 
 @end
 
