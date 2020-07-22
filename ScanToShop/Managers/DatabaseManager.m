@@ -11,7 +11,7 @@
 
 @implementation DatabaseManager
 
-+(BOOL) registerUserInParse:(UIViewController *)vc User:(User *)user {
++(void)saveUser:(User *)user withCompletion:(void(^)(BOOL success, NSError *error))completion {
     PFUser *newUser = [PFUser new];
     newUser.username = user.username;
     newUser.password = user.password;
@@ -20,34 +20,28 @@
     newUser[@"last_name"] = user.lastName;
     newUser[@"image"] = [DatabaseManager getPFFileFromImageData:user.profileImageData];
     
-    __block BOOL success;
     [newUser signUpInBackgroundWithBlock:^(BOOL succeeded, NSError * error) {
         if (error) {
             NSLog(@"Error: %@", error.localizedDescription);
-            [AlertManager loginAlert:ParseBackendError ErrorString:error.localizedDescription ViewController:vc];
         }
         else {
             NSLog(@"User registered successfully");
-            [vc performSegueWithIdentifier:@"registerSegue" sender:nil];
         }
-        success = succeeded;
+        completion(succeeded, error);
     }];
-    return success;
 }
 
-+(BOOL) loginWithParse:(UIViewController *)vc Username:(NSString *)username Password:(NSString *)password {
-    __block BOOL success = NO;
++(void)loginUser:(NSString *)username password:(NSString *)password withCompletion:(void(^)(BOOL success, NSError *error))completion {
     [PFUser logInWithUsernameInBackground:username password:password block:^(PFUser * user, NSError *  error) {
         if (error) {
             NSLog(@"User log in failed: %@", error.localizedDescription);
-            [AlertManager loginAlert:ParseBackendError ErrorString: error.localizedDescription ViewController:vc];
-        } else {
+            completion(NO, error);
+        }
+        else {
             NSLog(@"User logged in successfully");
-            [vc performSegueWithIdentifier:@"loginSegue" sender:nil];
-            success = YES;
+            completion(YES, nil);
         }
     }];
-    return success;
 }
 
 +(PFFileObject *) getPFFileFromImageData: (NSData *)imageData {

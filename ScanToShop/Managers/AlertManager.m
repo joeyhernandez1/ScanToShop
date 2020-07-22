@@ -8,15 +8,10 @@
 
 #import "AlertManager.h"
 
-@interface AlertManager ()
-
-@end
-
 @implementation AlertManager
 
-+ (void)loginAlert:(errorType)error ErrorString:(nullable NSString *) errorString ViewController:(UIViewController *)vc {
++ (void)loginAlert:(errorType)error errorString:(nullable NSString *) errorString viewController:(UIViewController *)vc {
     UIAlertController *alert;
-    
     UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"Cancel"
                                                            style:UIAlertActionStyleCancel
                                                          handler:^(UIAlertAction * _Nonnull action) {
@@ -36,7 +31,7 @@
             [alert addAction:cancelAction];
             break;
             
-        case ParseBackendError:
+        case ServerError:
             alert = [UIAlertController alertControllerWithTitle:@"Error"
                                                         message:errorString
                                                  preferredStyle:(UIAlertControllerStyleAlert)];
@@ -50,7 +45,7 @@
             [alert addAction:okAction];
             break;
             
-        case SpaceNewlineError:
+        case InputValidationError:
             alert = [UIAlertController alertControllerWithTitle:@"Error"
                                                     message:@"Check for spaces and new lines."
                                              preferredStyle:(UIAlertControllerStyleAlert)];

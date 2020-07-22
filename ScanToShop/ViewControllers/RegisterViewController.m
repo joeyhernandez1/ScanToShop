@@ -25,10 +25,6 @@
 
 @implementation RegisterViewController
 
-- (void)viewDidLoad {
-    [super viewDidLoad];
-}
-
 - (IBAction)onViewTap:(id)sender {
     [self.view endEditing:YES];
 }
@@ -90,17 +86,17 @@
 - (void)registerUser {
     
     if ([self areUserInputFieldsEmpty]) {
-        [AlertManager loginAlert:LoginErrorMissingInput ErrorString:nil ViewController:self];
+        [AlertManager loginAlert:LoginErrorMissingInput errorString:nil viewController:self];
         return;
     }
     
     if ([self fieldsContainSpacesOrNewlines]) {
-        [AlertManager loginAlert:SpaceNewlineError ErrorString:nil ViewController:self];
+        [AlertManager loginAlert:InputValidationError errorString:nil viewController:self];
         return;
     }
     
-    if (![self containsValidPassword:self.passwordField.text]) {
-        [AlertManager loginAlert:PasswordError ErrorString:nil ViewController:self];
+    if (![self containsValidPassword]) {
+        [AlertManager loginAlert:PasswordError errorString:nil viewController:self];
         return;
     }
     
@@ -112,13 +108,18 @@
     user.lastName = self.lastNameField.text;
     user.profileImageData = UIImagePNGRepresentation(self.profileImage.image);
     
-    if ([DatabaseManager registerUserInParse:self User:user]) {
-        [self setFieldsToDefault];
-    }
+    [DatabaseManager saveUser:user withCompletion:^(BOOL success, NSError *error) {
+        if (success) {
+            [self performSegueWithIdentifier:@"registerSegue" sender:nil];
+            [self setFieldsToDefault];
+        }
+        else {
+            [AlertManager loginAlert:ServerError errorString:error.localizedDescription viewController:self];
+        }
+    }];
 }
 
 -(void) setFieldsToDefault {
-    [self performSegueWithIdentifier:@"registerSegue" sender:nil];
     self.usernameField.text = @"";
     self.passwordField.text = @"";
     self.emailField.text = @"";
@@ -146,12 +147,12 @@
            [[self.lastNameField.text stringByTrimmingCharactersInSet:newLineSet] length] < [self.lastNameField.text length];
 }
 
-- (BOOL)containsValidPassword:(NSString*)password {
+- (BOOL)containsValidPassword {
      NSString* const pattern = @"^.*(?=.{8,})(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9]).*$";
      NSRegularExpression* regex = [[NSRegularExpression alloc] initWithPattern:pattern options:0 error:nil];
-     NSRange range = NSMakeRange(0, [password length]);
+    NSRange range = NSMakeRange(0, [self.passwordField.text length]);
      
-    return [regex numberOfMatchesInString:password options:0 range:range] > 0;
+    return [regex numberOfMatchesInString:self.passwordField.text options:0 range:range] > 0;
 }
 
 @end

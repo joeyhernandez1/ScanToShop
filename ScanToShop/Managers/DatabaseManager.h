@@ -14,9 +14,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface DatabaseManager : NSObject
 
-+(BOOL) registerUserInParse:(UIViewController *)vc User:(User *)user;
-+(BOOL) loginWithParse:(UIViewController *)vc Username:(NSString *)username Password:(NSString *)password;
-+ (PFFileObject *)getPFFileFromImageData: (NSData *)imageData;
++(void)saveUser:(User *)user withCompletion:(void(^)(BOOL success, NSError *error))completion;
++(void)loginUser:(NSString *)username password:(NSString *)password withCompletion:(void(^)(BOOL success, NSError *error))completion;
 
 @end
 

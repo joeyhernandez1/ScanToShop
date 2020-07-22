@@ -38,14 +38,21 @@
 
 - (void)loginUser {
     if ([self areUserInputFieldsEmpty]) {
-        [AlertManager loginAlert:LoginErrorMissingInput ErrorString:nil ViewController:self];
+        [AlertManager loginAlert:LoginErrorMissingInput errorString:nil viewController:self];
         return;
     }
     
     NSString *username = self.usernameField.text;
     NSString *password = self.passwordField.text;
     
-    [DatabaseManager loginWithParse:self Username:username Password:password];
+    [DatabaseManager loginUser:username password:password withCompletion:^(BOOL success, NSError * _Nonnull error) {
+        if (success) {
+            [self performSegueWithIdentifier:@"loginSegue" sender:nil];
+        }
+        else {
+            [AlertManager loginAlert:ServerError errorString: error.localizedDescription viewController:self];
+        }
+    }];
 }
 
 -(BOOL) areUserInputFieldsEmpty {
