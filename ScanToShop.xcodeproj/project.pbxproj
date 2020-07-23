@@ -27,6 +27,9 @@
 		4E19229924BE368900B08EE6 /* DealCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 4E19229824BE368900B08EE6 /* DealCell.m */; };
 		4E19229D24BF697500B08EE6 /* Deal.m in Sources */ = {isa = PBXBuildFile; fileRef = 4E19229C24BF697500B08EE6 /* Deal.m */; };
 		4E1922A024C0A73800B08EE6 /* Item.m in Sources */ = {isa = PBXBuildFile; fileRef = 4E19229F24C0A73800B08EE6 /* Item.m */; };
+		4E1C21B524C25DCA00669C4D /* AlertManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 4E1C21B424C25DCA00669C4D /* AlertManager.m */; };
+		4E1C21BB24C2650A00669C4D /* DatabaseManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 4E1C21BA24C2650A00669C4D /* DatabaseManager.m */; };
+		4E1C21BE24C7924400669C4D /* User.m in Sources */ = {isa = PBXBuildFile; fileRef = 4E1C21BD24C7924400669C4D /* User.m */; };
 		719949778BE9982828964AF9 /* Pods_ScanToShop.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 830A4F3DB41A99D64DFC5358 /* Pods_ScanToShop.framework */; };
 /* End PBXBuildFile section */
 
@@ -87,6 +90,12 @@
 		4E19229C24BF697500B08EE6 /* Deal.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Deal.m; sourceTree = "<group>"; };
 		4E19229E24C0A73800B08EE6 /* Item.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Item.h; sourceTree = "<group>"; };
 		4E19229F24C0A73800B08EE6 /* Item.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Item.m; sourceTree = "<group>"; };
+		4E1C21B324C25DCA00669C4D /* AlertManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AlertManager.h; sourceTree = "<group>"; };
+		4E1C21B424C25DCA00669C4D /* AlertManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AlertManager.m; sourceTree = "<group>"; };
+		4E1C21B924C2650A00669C4D /* DatabaseManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DatabaseManager.h; sourceTree = "<group>"; };
+		4E1C21BA24C2650A00669C4D /* DatabaseManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DatabaseManager.m; sourceTree = "<group>"; };
+		4E1C21BC24C7924400669C4D /* User.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = User.h; sourceTree = "<group>"; };
+		4E1C21BD24C7924400669C4D /* User.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = User.m; sourceTree = "<group>"; };
 		830A4F3DB41A99D64DFC5358 /* Pods_ScanToShop.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ScanToShop.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		86C7071910E479A4B0EFAC26 /* Pods-ScanToShop.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ScanToShop.release.xcconfig"; path = "Target Support Files/Pods-ScanToShop/Pods-ScanToShop.release.xcconfig"; sourceTree = "<group>"; };
 		AC0EF716635A82915210568F /* Pods_ScanToShop_ScanToShopUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ScanToShop_ScanToShopUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -148,6 +157,7 @@
 		4E19224A24BD0A1700B08EE6 /* ScanToShop */ = {
 			isa = PBXGroup;
 			children = (
+				4E1C21AF24C25BDA00669C4D /* Managers */,
 				4E19229A24BF67C000B08EE6 /* Models */,
 				4E19229624BE366C00B08EE6 /* Views */,
 				4E19228024BD1AAD00B08EE6 /* ViewControllers */,
@@ -219,8 +229,21 @@
 				4E19229C24BF697500B08EE6 /* Deal.m */,
 				4E19229E24C0A73800B08EE6 /* Item.h */,
 				4E19229F24C0A73800B08EE6 /* Item.m */,
+				4E1C21BC24C7924400669C4D /* User.h */,
+				4E1C21BD24C7924400669C4D /* User.m */,
 			);
 			path = Models;
+			sourceTree = "<group>";
+		};
+		4E1C21AF24C25BDA00669C4D /* Managers */ = {
+			isa = PBXGroup;
+			children = (
+				4E1C21B324C25DCA00669C4D /* AlertManager.h */,
+				4E1C21B424C25DCA00669C4D /* AlertManager.m */,
+				4E1C21B924C2650A00669C4D /* DatabaseManager.h */,
+				4E1C21BA24C2650A00669C4D /* DatabaseManager.m */,
+			);
+			path = Managers;
 			sourceTree = "<group>";
 		};
 		71B1B3E168B213533EEEDAD5 /* Pods */ = {
@@ -484,6 +507,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4E1C21BE24C7924400669C4D /* User.m in Sources */,
 				4E1922A024C0A73800B08EE6 /* Item.m in Sources */,
 				4E19228624BD1B8300B08EE6 /* RegisterViewController.m in Sources */,
 				4E19229524BD1C5C00B08EE6 /* DetailsViewController.m in Sources */,
@@ -492,10 +516,12 @@
 				4E19224D24BD0A1700B08EE6 /* AppDelegate.m in Sources */,
 				4E19225E24BD0A1800B08EE6 /* main.m in Sources */,
 				4E19228924BD1BDE00B08EE6 /* BarcodeScanViewController.m in Sources */,
+				4E1C21B524C25DCA00669C4D /* AlertManager.m in Sources */,
 				4E19229D24BF697500B08EE6 /* Deal.m in Sources */,
 				4E19225024BD0A1700B08EE6 /* SceneDelegate.m in Sources */,
 				4E19229224BD1C2D00B08EE6 /* DealsViewController.m in Sources */,
 				4E19228324BD1B5B00B08EE6 /* LoginViewController.m in Sources */,
+				4E1C21BB24C2650A00669C4D /* DatabaseManager.m in Sources */,
 				4E19229924BE368900B08EE6 /* DealCell.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
