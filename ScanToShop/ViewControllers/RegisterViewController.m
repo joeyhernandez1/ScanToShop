@@ -108,18 +108,18 @@
     user.lastName = self.lastNameField.text;
     user.profileImageData = UIImagePNGRepresentation(self.profileImage.image);
     
-    [DatabaseManager saveUser:user withCompletion:^(BOOL success, NSError *error) {
-        if (success) {
-            [self performSegueWithIdentifier:@"registerSegue" sender:nil];
-            [self setFieldsToDefault];
+    [DatabaseManager saveUser:user withCompletion:^(NSError *error) {
+        if (error) {
+            [AlertManager loginAlert:ServerError errorString:error.localizedDescription viewController:self];
         }
         else {
-            [AlertManager loginAlert:ServerError errorString:error.localizedDescription viewController:self];
+            [self performSegueWithIdentifier:@"registerSegue" sender:nil];
+            [self setFieldsToDefault];
         }
     }];
 }
 
--(void) setFieldsToDefault {
+- (void)setFieldsToDefault {
     self.usernameField.text = @"";
     self.passwordField.text = @"";
     self.emailField.text = @"";
@@ -128,7 +128,7 @@
     self.profileImage.image = [UIImage imageNamed:@"person.circle.fill"];
 }
 
--(BOOL) areUserInputFieldsEmpty {
+- (BOOL)areUserInputFieldsEmpty {
     return [self.usernameField.text isEqual:@""]  ||
            [self.passwordField.text isEqual:@""]  ||
            [self.firstNameField.text isEqual:@""] ||
@@ -136,7 +136,7 @@
            [self.emailField.text isEqual:@""];
 }
 
--(BOOL)fieldsContainSpacesOrNewlines {
+- (BOOL)fieldsContainSpacesOrNewlines {
     NSCharacterSet *set = [NSCharacterSet whitespaceAndNewlineCharacterSet];
     NSCharacterSet *newLineSet = [NSCharacterSet newlineCharacterSet];
     

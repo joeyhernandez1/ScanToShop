@@ -17,10 +17,6 @@
 
 @implementation DealsViewController
 
-- (void)viewDidLoad {
-    [super viewDidLoad];
-}
-
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     DealCell *cell = [tableView dequeueReusableCellWithIdentifier:@"DealCell"];
     return cell;

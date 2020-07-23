@@ -11,7 +11,7 @@
 
 @implementation DatabaseManager
 
-+(void)saveUser:(User *)user withCompletion:(void(^)(BOOL success, NSError *error))completion {
++ (void)saveUser:(User *)user withCompletion:(void(^)(NSError *error))completion {
     PFUser *newUser = [PFUser new];
     newUser.username = user.username;
     newUser.password = user.password;
@@ -27,28 +27,26 @@
         else {
             NSLog(@"User registered successfully");
         }
-        completion(succeeded, error);
+        completion(error);
     }];
 }
 
-+(void)loginUser:(NSString *)username password:(NSString *)password withCompletion:(void(^)(BOOL success, NSError *error))completion {
++ (void)loginUser:(NSString *)username password:(NSString *)password withCompletion:(void(^)(NSError *error))completion {
     [PFUser logInWithUsernameInBackground:username password:password block:^(PFUser * user, NSError *  error) {
         if (error) {
             NSLog(@"User log in failed: %@", error.localizedDescription);
-            completion(NO, error);
         }
         else {
             NSLog(@"User logged in successfully");
-            completion(YES, nil);
         }
+        completion(error);
     }];
 }
 
-+(PFFileObject *) getPFFileFromImageData: (NSData *)imageData {
++ (PFFileObject *)getPFFileFromImageData: (NSData *)imageData {
     if (!imageData) {
         return nil;
     }
-    
     return [PFFileObject fileObjectWithName:@"image.png" data:imageData];
 }
 
