@@ -7,6 +7,7 @@ target 'ScanToShop' do
 
   # Pods for ScanToShop
   pod 'Parse'
+  pod 'GoogleMLKit/BarcodeScanning'
 
   target 'ScanToShopTests' do
     inherit! :search_paths

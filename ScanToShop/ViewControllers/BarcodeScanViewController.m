@@ -8,13 +8,15 @@
 
 #import "BarcodeScanViewController.h"
 #import <AVFoundation/AVFoundation.h>
+#import <MLKit.h>
 
-@interface BarcodeScanViewController ()
+@interface BarcodeScanViewController () <AVCaptureVideoDataOutputSampleBufferDelegate>
 
 @property (weak, nonatomic) IBOutlet UIView *previewView;
 @property (nonatomic) AVCaptureSession *captureSession;
-@property (nonatomic) AVCapturePhotoOutput *stillImageOutput;
+@property (nonatomic) AVCaptureVideoDataOutput *videoDataOutput;
 @property (nonatomic) AVCaptureVideoPreviewLayer *videoPreviewLayer;
+@property (strong, nonatomic) NSString *barcodeValue;
 
 @end
 
@@ -34,10 +36,15 @@
     NSError *error;
     AVCaptureDeviceInput *input = [AVCaptureDeviceInput deviceInputWithDevice:backCamera error:&error];
     if (!error) {
-        self.stillImageOutput = [AVCapturePhotoOutput new];
-        if ([self.captureSession canAddInput:input] && [self.captureSession canAddOutput:self.stillImageOutput]) {
+        self.videoDataOutput = [AVCaptureVideoDataOutput new];
+        NSDictionary *newSettings = @{(NSString *)kCVPixelBufferPixelFormatTypeKey : @(kCVPixelFormatType_32BGRA) };
+        self.videoDataOutput.videoSettings = newSettings;
+        [self.videoDataOutput setAlwaysDiscardsLateVideoFrames:YES];
+        if ([self.captureSession canAddInput:input] && [self.captureSession canAddOutput:self.videoDataOutput]) {
             [self.captureSession addInput:input];
-            [self.captureSession addOutput:self.stillImageOutput];
+            [self.captureSession addOutput:self.videoDataOutput];
+            dispatch_queue_t videoDataOutputQueue = dispatch_queue_create("VideoDataOutputQueue", DISPATCH_QUEUE_SERIAL);
+            [self.videoDataOutput setSampleBufferDelegate:self queue:videoDataOutputQueue];
             [self setupLivePreview];
         }
     }
@@ -51,20 +58,57 @@
     [self.captureSession stopRunning];
 }
 
+- (void)captureOutput:(AVCaptureOutput *)output didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer fromConnection:(AVCaptureConnection *)connection {
+    MLKVisionImage *image = [[MLKVisionImage alloc] initWithBuffer:sampleBuffer];
+    image.orientation = [self imageOrientationFromDeviceOrientation:UIDevice.currentDevice.orientation cameraPosition:AVCaptureDevicePositionBack];
+    MLKBarcodeScanner *barcodeScanner = [MLKBarcodeScanner barcodeScanner];
+    [barcodeScanner processImage:image completion:^(NSArray<MLKBarcode *> * _Nullable barcodes, NSError * _Nullable error) {
+        if (error) {
+            return;
+        }
+        if (barcodes.count > 0) {
+            NSLog(@"barcode count = %lu", barcodes.count);
+            self.barcodeValue = barcodes.firstObject.rawValue;
+            NSLog(@"Barcode: %@", self.barcodeValue);
+        }
+        else {
+             NSLog(@"No barcodes fetched");
+        }
+    }];
+}
+
 - (void)setupLivePreview {
     self.videoPreviewLayer = [AVCaptureVideoPreviewLayer layerWithSession:self.captureSession];
     if (self.videoPreviewLayer) {
         self.videoPreviewLayer.videoGravity = AVLayerVideoGravityResizeAspectFill;
         self.videoPreviewLayer.connection.videoOrientation = AVCaptureVideoOrientationPortrait;
         [self.previewView.layer addSublayer:self.videoPreviewLayer];
-        
-        dispatch_queue_t globalQueue =  dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0);
-        dispatch_async(globalQueue, ^{
+        [self.view insertSubview:self.previewView atIndex:0];
+        self.videoPreviewLayer.frame = self.previewView.bounds;
+        if (!self.captureSession.isRunning) {
             [self.captureSession startRunning];
-            dispatch_async(dispatch_get_main_queue(), ^{
-                self.videoPreviewLayer.frame = self.previewView.bounds;
-            });
-        });
+        }
+    }
+}
+
+- (UIImageOrientation)imageOrientationFromDeviceOrientation:(UIDeviceOrientation)deviceOrientation cameraPosition:(AVCaptureDevicePosition)cameraPosition {
+    switch (deviceOrientation) {
+        case UIDeviceOrientationPortrait:
+            return cameraPosition == AVCaptureDevicePositionFront ? UIImageOrientationLeftMirrored
+            : UIImageOrientationRight;
+        case UIDeviceOrientationLandscapeLeft:
+            return cameraPosition == AVCaptureDevicePositionFront ? UIImageOrientationDownMirrored
+            : UIImageOrientationUp;
+        case UIDeviceOrientationPortraitUpsideDown:
+            return cameraPosition == AVCaptureDevicePositionFront ? UIImageOrientationRightMirrored
+            : UIImageOrientationLeft;
+        case UIDeviceOrientationLandscapeRight:
+            return cameraPosition == AVCaptureDevicePositionFront ? UIImageOrientationUpMirrored
+            : UIImageOrientationDown;
+        case UIDeviceOrientationUnknown:
+        case UIDeviceOrientationFaceUp:
+        case UIDeviceOrientationFaceDown:
+            return UIImageOrientationUp;
     }
 }
 
