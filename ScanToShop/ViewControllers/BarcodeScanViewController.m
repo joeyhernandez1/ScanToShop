@@ -16,7 +16,6 @@
 @property (nonatomic) AVCaptureSession *captureSession;
 @property (nonatomic) AVCaptureVideoDataOutput *videoDataOutput;
 @property (nonatomic) AVCaptureVideoPreviewLayer *videoPreviewLayer;
-@property (strong, nonatomic) NSString *barcodeValue;
 
 @end
 
@@ -24,6 +23,7 @@
 
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
+    
     self.captureSession = [AVCaptureSession new];
     self.captureSession.sessionPreset = AVCaptureSessionPreset1280x720;
     
@@ -55,6 +55,7 @@
 
 - (void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
+    
     [self.captureSession stopRunning];
 }
 
@@ -67,12 +68,11 @@
             return;
         }
         if (barcodes.count > 0) {
-            NSLog(@"barcode count = %lu", barcodes.count);
-            self.barcodeValue = barcodes.firstObject.rawValue;
-            NSLog(@"Barcode: %@", self.barcodeValue);
+            [self.delegate didScanBarcode:barcodes.firstObject.rawValue];
+            [self performSegueWithIdentifier:@"dealsSegue" sender:nil];
         }
         else {
-             NSLog(@"No barcodes fetched");
+            return;
         }
     }];
 }
