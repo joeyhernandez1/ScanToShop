@@ -7,6 +7,7 @@
 //
 
 #import "BarcodeScanViewController.h"
+#import "AlertManager.h"
 #import <AVFoundation/AVFoundation.h>
 #import <MLKit.h>
 
@@ -21,9 +22,61 @@
 
 @implementation BarcodeScanViewController
 
+- (void)viewDidLoad {
+    [super viewDidLoad];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(checkPermissions)
+                                                 name:UIApplicationDidBecomeActiveNotification
+                                               object:nil];
+}
+
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
     
+    [self checkPermissions];
+}
+
+- (void)viewWillDisappear:(BOOL)animated {
+    [super viewWillDisappear:animated];
+    
+    [self.captureSession stopRunning];
+}
+
+- (void)dealloc
+{
+     [[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationDidBecomeActiveNotification object:nil];
+}
+
+- (void)checkPermissions {
+    AVAuthorizationStatus authStatus = [AVCaptureDevice authorizationStatusForMediaType:AVMediaTypeVideo];
+    switch (authStatus) {
+        case AVAuthorizationStatusAuthorized:
+            [self setupCaptureSession];
+            break;
+            
+        case AVAuthorizationStatusRestricted:
+            [AlertManager videoPermissionAlert:self];
+            break;
+            
+        case AVAuthorizationStatusDenied:
+            [AlertManager videoPermissionAlert:self];
+            break;
+        
+        case AVAuthorizationStatusNotDetermined:
+            [AVCaptureDevice requestAccessForMediaType:AVMediaTypeVideo completionHandler:^(BOOL granted) {
+                if (granted) {
+                    [self setupCaptureSession];
+                }
+                else {
+                    [AlertManager videoPermissionAlert:self];
+                }
+            }];
+            break;
+    }
+}
+
+- (void)setupCaptureSession {
     self.captureSession = [AVCaptureSession new];
     self.captureSession.sessionPreset = AVCaptureSessionPreset1280x720;
     
@@ -51,12 +104,6 @@
     else {
         NSLog(@"Error Unable to initialize back camera: %@", error.localizedDescription);
     }
-}
-
-- (void)viewWillDisappear:(BOOL)animated {
-    [super viewWillDisappear:animated];
-    
-    [self.captureSession stopRunning];
 }
 
 - (void)captureOutput:(AVCaptureOutput *)output didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer fromConnection:(AVCaptureConnection *)connection {
