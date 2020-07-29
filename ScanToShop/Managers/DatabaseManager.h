@@ -14,8 +14,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface DatabaseManager : NSObject
 
-+(void)saveUser:(User *)user withCompletion:(void(^)(BOOL success, NSError *error))completion;
-+(void)loginUser:(NSString *)username password:(NSString *)password withCompletion:(void(^)(BOOL success, NSError *error))completion;
++ (void)saveUser:(User *)user withCompletion:(void(^)(NSError *error))completion;
++ (void)loginUser:(NSString *)username password:(NSString *)password withCompletion:(void(^)(NSError *error))completion;
 
 @end
 

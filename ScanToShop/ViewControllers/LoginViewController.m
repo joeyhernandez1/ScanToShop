@@ -19,10 +19,6 @@
 
 @implementation LoginViewController
 
-- (void)viewDidLoad {
-    [super viewDidLoad];
-}
-
 - (IBAction)onViewTap:(id)sender {
     [self.view endEditing:YES];
 }
@@ -45,17 +41,17 @@
     NSString *username = self.usernameField.text;
     NSString *password = self.passwordField.text;
     
-    [DatabaseManager loginUser:username password:password withCompletion:^(BOOL success, NSError * _Nonnull error) {
-        if (success) {
-            [self performSegueWithIdentifier:@"loginSegue" sender:nil];
+    [DatabaseManager loginUser:username password:password withCompletion:^(NSError *error) {
+        if (error) {
+            [AlertManager loginAlert:ServerError errorString: error.localizedDescription viewController:self];
         }
         else {
-            [AlertManager loginAlert:ServerError errorString: error.localizedDescription viewController:self];
+            [self performSegueWithIdentifier:@"loginSegue" sender:nil];
         }
     }];
 }
 
--(BOOL) areUserInputFieldsEmpty {
+- (BOOL)areUserInputFieldsEmpty {
     return [self.usernameField.text isEqual:@""] || [self.passwordField.text isEqual:@""];
 }
 

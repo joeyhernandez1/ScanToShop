@@ -207,7 +207,8 @@
                     </view>
                     <navigationItem key="navigationItem" title="Barcode Scan" id="Lkm-Ae-E2T"/>
                     <connections>
-                        <segue destination="GjE-ep-gr3" kind="show" identifier="dealsSegue" id="wlN-ty-8Ua"/>
+                        <outlet property="previewView" destination="2El-1w-Ct7" id="WxZ-4O-VoV"/>
+                        <segue destination="GjE-ep-gr3" kind="show" identifier="dealsSegue" id="fJX-6T-kqW"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="yCC-Mu-fXu" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>

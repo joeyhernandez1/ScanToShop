@@ -10,7 +10,15 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+@protocol BarcodeScanViewControllerDelegate
+
+- (void)didScanBarcode:(NSString *) barcode;
+
+@end
+
 @interface BarcodeScanViewController : UIViewController
+
+@property (nonatomic, weak) id<BarcodeScanViewControllerDelegate> delegate;
 
 @end
 

@@ -20,6 +20,7 @@ typedef NS_ENUM(NSInteger, errorType) {
 };
 
 + (void)loginAlert:(errorType)error errorString:(nullable NSString *) errorString viewController:(UIViewController *)vc;
++ (void)videoPermissionAlert:(UIViewController *)vc;
 
 @end
 
