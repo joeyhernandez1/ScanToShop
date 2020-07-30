@@ -7,6 +7,7 @@
 //
 
 #import "BarcodeScanViewController.h"
+#import "DealsViewController.h"
 #import "AlertManager.h"
 #import <AVFoundation/AVFoundation.h>
 #import <MLKit.h>
@@ -17,6 +18,7 @@
 @property (nonatomic) AVCaptureSession *captureSession;
 @property (nonatomic) AVCaptureVideoDataOutput *videoDataOutput;
 @property (nonatomic) AVCaptureVideoPreviewLayer *videoPreviewLayer;
+@property (strong, nonatomic) NSString *barcode;
 
 @end
 
@@ -115,7 +117,7 @@
             return;
         }
         if (barcodes.count > 0) {
-            [self.delegate didScanBarcode:barcodes.firstObject.rawValue];
+            self.barcode = barcodes.firstObject.rawValue;
             [self performSegueWithIdentifier:@"dealsSegue" sender:nil];
         }
         else {
@@ -156,6 +158,13 @@
         case UIDeviceOrientationFaceUp:
         case UIDeviceOrientationFaceDown:
             return UIImageOrientationUp;
+    }
+}
+
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+    if ([segue.identifier isEqualToString:@"dealsSegue"]) {
+        DealsViewController *dealsController = [segue destinationViewController];
+        dealsController.barcode = self.barcode;
     }
 }
 

@@ -12,6 +12,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface DealsViewController : UIViewController
 
+@property (strong, nonatomic) NSString *barcode;
+
 @end
 
 NS_ASSUME_NONNULL_END

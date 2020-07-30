@@ -12,15 +12,21 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface AlertManager : NSObject
 
-typedef NS_ENUM(NSInteger, errorType) {
+typedef NS_ENUM(NSInteger, loginErrorType) {
     InputValidationError,
     LoginErrorMissingInput,
     PasswordError,
     ServerError
 };
 
-+ (void)loginAlert:(errorType)error errorString:(nullable NSString *) errorString viewController:(UIViewController *)vc;
+typedef NS_ENUM(NSInteger, dealErrorType) {
+    NoDealFoundError,
+    NoItemFoundError
+};
+
++ (void)loginAlert:(loginErrorType)error errorString:(nullable NSString *) errorString viewController:(UIViewController *)vc;
 + (void)videoPermissionAlert:(UIViewController *)vc;
++ (void)dealNotFoundAlert:(UIViewController *)vc errorType:(dealErrorType)error;
 
 @end
 

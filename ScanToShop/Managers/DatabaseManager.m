@@ -8,6 +8,10 @@
 
 #import "DatabaseManager.h"
 #import "AlertManager.h"
+#import "AppDeal.h"
+#import "AppItem.h"
+#import "Deal.h"
+#import "Item.h"
 
 @implementation DatabaseManager
 
@@ -43,11 +47,219 @@
     }];
 }
 
++ (void)fetchItem:(NSString *)barcode viewController:(UIViewController *)vc withCompletion:(void(^)(NSArray *deals,NSError *error))completion {
+    PFQuery *itemQuery = [Item query];
+    [itemQuery whereKey:@"barcode" equalTo:barcode];
+    [itemQuery getFirstObjectInBackgroundWithBlock:^(PFObject * _Nullable object, NSError * _Nullable error) {
+        if (object != nil) {
+            [DatabaseManager fetchDeals:object withCompletion:^(NSArray * _Nonnull deals, NSError * _Nonnull error) {
+                if (deals.count > 0) {
+                    [DatabaseManager createDealsFromFetchWithBlock:deals withCompletion:^(NSArray *appDeals) {
+                        completion(appDeals, nil);
+                    }];
+                }
+                else {
+                    [AlertManager dealNotFoundAlert:vc errorType:NoDealFoundError];
+                }
+            }];
+        }
+        else {
+            completion(nil, error);
+            [AlertManager dealNotFoundAlert:vc errorType:NoItemFoundError];
+        }
+    }];
+}
+
++ (void)fetchDeals:(PFObject *)item withCompletion:(void(^)(NSArray *deals ,NSError *error))completion {
+    PFQuery *dealsQuery = [Deal query];
+    [dealsQuery includeKey:@"item"];
+    [dealsQuery whereKey:@"item" equalTo:item];
+    
+    [dealsQuery findObjectsInBackgroundWithBlock:^(NSArray * _Nullable objects, NSError * _Nullable error) {
+        if (objects.count > 0) {
+            completion(objects, nil);
+        }
+        else {
+            completion(nil, error);
+        }
+    }];
+}
+
++ (void)createDealsFromFetchWithBlock:(NSArray *)serverDeals withCompletion:(void(^)(NSArray *appDeals))completion{
+    NSMutableArray *result = [NSMutableArray array];
+    dispatch_group_t group = dispatch_group_create();
+    for (PFObject *obj in serverDeals) {
+        Deal *serverDeal = [DatabaseManager createDealFromObject:obj];
+        if (serverDeal != nil) {
+            dispatch_group_enter(group);
+            [DatabaseManager createDealFromServerDealWithBlock:serverDeal withCompletion:^(AppDeal *appDeal, NSError *error) {
+                [result addObject:appDeal];
+                dispatch_group_leave(group);
+            }];
+        }
+    }
+    dispatch_group_notify(group, dispatch_get_main_queue(), ^{
+        completion(result);
+    });
+}
+
++ (Deal *)createDealFromObject:(PFObject *)object {
+    Deal *deal = [Deal new];
+    if (object[@"sellerPlatform"] != nil && [object[@"sellerPlatform"] isKindOfClass:[NSString class]]) {
+        deal.sellerPlatform = object[@"sellerPlatform"];
+    }
+    else {
+        return nil;
+    }
+    if (object[@"price"] != nil && [object[@"price"] isKindOfClass:[NSNumber class]]) {
+        deal.price = object[@"price"];
+    }
+    else {
+        return nil;
+    }
+    if (object[@"item"] != nil && [object[@"item"] isKindOfClass:[PFObject class]]) {
+        deal.item = [DatabaseManager createServerItemFromPFObject:object[@"item"]];
+    }
+    else {
+        return nil;
+    }
+    if (object[@"link"] != nil && [object[@"link"] isKindOfClass:[NSString class]]) {
+        deal.platformItemURL = object[@"link"];
+    }
+    else {
+        return nil;
+    }
+    return deal;
+}
+
++ (void)createDealFromServerDealWithBlock:(Deal *)serverDeal withCompletion:(void(^)(AppDeal *appDeal ,NSError *error))completion {
+    AppDeal *deal = [AppDeal new];
+    deal.platformItemURL = [NSURL URLWithString:serverDeal.platformItemURL];
+    deal.price = serverDeal.price;
+    deal.sellerPlatform = serverDeal.sellerPlatform;
+    [DatabaseManager createItemWithBlock:serverDeal.item withCompletion:^(AppItem *appItem, NSError *error) {
+        if (error) {
+            NSLog(@"Error at createDealFromServerDealWithBlock");
+        }
+        else {
+            deal.item = appItem;
+            completion(deal, nil);
+        }
+    }];
+}
+
++ (Item *)createServerItemFromPFObject:(PFObject *)object {
+    Item *serverItem = [Item new];
+    
+    if (object[@"name"] != nil && [object[@"name"] isKindOfClass:[NSString class]]) {
+        serverItem.name = object[@"name"];
+        NSLog(@"%@",serverItem.name);
+    }
+    if (object[@"info"] != nil && [object[@"info"] isKindOfClass:[NSString class]]) {
+        serverItem.information = object[@"info"];
+        NSLog(@"%@",serverItem.information);
+    }
+    if (object[@"barcode"] != nil && [object[@"barcode"] isKindOfClass:[NSString class]]) {
+        serverItem.barcode = object[@"barcode"];
+        NSLog(@"%@",serverItem.barcode);
+    }
+    if (object[@"image"] != nil) {
+        serverItem.image = object[@"image"];
+    }
+    serverItem.objectId = object.objectId;
+
+    return serverItem;
+}
+
++ (void)createItemWithBlock:(Item *)serverItem withCompletion:(void(^)(AppItem *appItem ,NSError *error))completion {
+    AppItem *item = [AppItem new];
+    item.barcode = serverItem.barcode;
+    item.name = serverItem.name;
+    item.information = serverItem.information;
+    item.identifier = serverItem.objectId;
+    [serverItem.image getDataInBackgroundWithBlock:^(NSData * _Nullable data, NSError * _Nullable error) {
+        if (error) {
+            completion(nil,error);
+        }
+        else {
+            item.image = data;
+            completion(item, nil);
+        }
+    }];
+}
+
+
++ (PFFileObject *)getPFFileFromImage: (UIImage * _Nullable)image {
+    NSData *imageData = UIImagePNGRepresentation(image);
+    if (!imageData) {
+        return nil;
+    }
+    return [PFFileObject fileObjectWithName:@"image.png" data:imageData];
+}
+
 + (PFFileObject *)getPFFileFromImageData: (NSData *)imageData {
     if (!imageData) {
         return nil;
     }
     return [PFFileObject fileObjectWithName:@"image.png" data:imageData];
+}
+
++ (void)populateServer {
+    Item *item1 = [Item new];
+    item1[@"name"] = @"Call of Duty: Black Ops 4";
+    item1[@"info"] = @"Fourth game of the Call of Duty Black Ops saga";
+    item1[@"barcode"] = @"047875882348";
+    item1[@"image"] = [DatabaseManager getPFFileFromImage:[UIImage imageNamed: @"codbo4"]];
+    [item1 saveInBackground];
+    
+    Item *item2 = [Item new];
+    item2[@"name"] = @"Reprogramming the American Dream";
+    item2[@"info"] = @"Book written by Microsoft CTO Kevin Scott about AI.";
+    item2[@"barcode"] = @"9780062879875";
+    item2[@"image"] = [DatabaseManager getPFFileFromImage:[UIImage imageNamed: @"codbo4"]];
+    [item2 saveInBackground];
+    
+    Item *item3 = [Item new];
+    item3[@"name"] = @"NBA 2K15";
+    item3[@"info"] = @"NBA 2K game for the 2015-2016 season.";
+    item3[@"barcode"] = @"710425494147";
+    item3[@"image"] = [DatabaseManager getPFFileFromImage:[UIImage imageNamed: @"codbo4"]];
+    [item3 saveInBackground];
+    
+    Item *item4 = [Item new];
+    item4[@"name"] = @"FIFA 15";
+    item4[@"info"] = @"FIFA game for the 2014-2015 cycle.";
+    item4[@"barcode"] = @"01463336779";
+    item4[@"image"] = [DatabaseManager getPFFileFromImage:[UIImage imageNamed: @"codbo4"]];
+    [item4 saveInBackground];
+    
+    Item *item5 = [Item new];
+    item5[@"name"] = @"Cracking the Coding Interview";
+    item5[@"info"] = @"Book about coding interviews.";
+    item5[@"barcode"] = @"9780984782857";
+    item5[@"image"] = [DatabaseManager getPFFileFromImage:[UIImage imageNamed: @"codbo4"]];
+    [item5 saveInBackground];
+    
+    Deal *deal1 = [Deal new];
+    deal1[@"item"] = item1;
+    deal1[@"sellerPlatform"] = @"Amazon";
+    deal1[@"price"] = @20.02;
+    deal1[@"link"] = @"https://www.amazon.com/Call-Duty-Black-Ops-Xbox-Standard/dp/B071JRHDFQ";
+    [deal1 saveInBackground];
+    
+    Deal *deal2 = [Deal new];
+    deal2[@"item"] = item1;
+    deal2[@"sellerPlatform"] = @"Ebay";
+    deal2[@"price"] = @19.65;
+    deal2[@"link"] = @"https://www.ebay.com/p/245256094";
+    [deal2 saveInBackground];
+    
+    Deal *deal3 = [Deal new];
+    deal3[@"item"] = item1;
+    deal3[@"sellerPlatform"] = @"Ebay";
+    deal3[@"price"] = @34.97;
+    deal3[@"link"] = @"https://www.gamestop.com/video-games/xbox-one/games/products/call-of-duty-black-ops-4/10159649.html?rt=productDetailsRedesign&utm_expid=.h77-PyHtRYaskNpc14UbmA.1&utm_referrer=https%3A%2F%2Fwww.gamestop.com%2Fvideo-games%2Fplaystation-4%2Fgames%2Fproducts%2Fcall-of-duty-black-ops-4%2F10159650.html%3Frt%3DproductDetailsRedesign";
+    [deal3 saveInBackground];
 }
 
 @end
