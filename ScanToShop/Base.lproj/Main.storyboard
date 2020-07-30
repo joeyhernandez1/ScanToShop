@@ -330,29 +330,34 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="VDL-5N-hW4">
-                                <rect key="frame" x="192" y="752" width="31" height="30"/>
+                                <rect key="frame" x="107" y="623" width="63" height="51"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="32"/>
                                 <state key="normal" title="BUY"/>
                                 <connections>
                                     <action selector="onBuyTap:" destination="QTO-Ix-ftP" eventType="touchUpInside" id="8Wx-SS-nGw"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dzW-tk-r48">
+                                <rect key="frame" x="221" y="623" width="77" height="51"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="32"/>
+                                <state key="normal" title="SAVE"/>
+                                <connections>
+                                    <action selector="onSaveTap:" destination="QTO-Ix-ftP" eventType="touchUpInside" id="546-MB-x3g"/>
                                 </connections>
                             </button>
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <viewLayoutGuide key="safeArea" id="zYM-GC-8oU"/>
                     </view>
-                    <navigationItem key="navigationItem" title="Deal Details" id="pA3-42-WuV">
-                        <barButtonItem key="rightBarButtonItem" title="Save" id="PIa-mc-g9V">
-                            <connections>
-                                <action selector="onSaveTap:" destination="QTO-Ix-ftP" id="Kx6-ij-5dx"/>
-                            </connections>
-                        </barButtonItem>
-                    </navigationItem>
+                    <navigationItem key="navigationItem" title="Deal Details" id="pA3-42-WuV"/>
                     <connections>
                         <outlet property="descriptionLabel" destination="82p-5o-cdJ" id="AHs-OV-qi4"/>
                         <outlet property="itemImageView" destination="aM1-kr-gkw" id="rjI-xQ-Rnr"/>
                         <outlet property="itemNameLabel" destination="2ba-BY-K05" id="aDY-9d-cvl"/>
                         <outlet property="priceLabel" destination="7N9-c3-Eo8" id="6CD-QA-2D7"/>
+                        <outlet property="saveButton" destination="dzW-tk-r48" id="98u-f0-h38"/>
                         <outlet property="sellerPlatformLabel" destination="Akr-S4-ZAm" id="44H-Qi-SS4"/>
                     </connections>
                 </viewController>

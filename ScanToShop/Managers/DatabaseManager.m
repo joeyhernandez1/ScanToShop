@@ -74,6 +74,7 @@
     PFQuery *dealsQuery = [Deal query];
     [dealsQuery includeKey:@"item"];
     [dealsQuery whereKey:@"item" equalTo:item];
+    [dealsQuery orderByAscending:@"price"];
     
     [dealsQuery findObjectsInBackgroundWithBlock:^(NSArray * _Nullable objects, NSError * _Nullable error) {
         if (objects.count > 0) {
@@ -129,6 +130,7 @@
     else {
         return nil;
     }
+    deal.objectId = object.objectId;
     return deal;
 }
 
@@ -137,6 +139,7 @@
     deal.platformItemURL = [NSURL URLWithString:serverDeal.platformItemURL];
     deal.price = serverDeal.price;
     deal.sellerPlatform = serverDeal.sellerPlatform;
+    deal.identifier = serverDeal.objectId;
     [DatabaseManager createItemWithBlock:serverDeal.item withCompletion:^(AppItem *appItem, NSError *error) {
         if (error) {
             NSLog(@"Error at createDealFromServerDealWithBlock");
@@ -188,6 +191,71 @@
     }];
 }
 
++ (void)saveDeal:(AppDeal *)appDeal withCompletion:(void(^)(NSError *error))completion {
+    PFUser *user = [PFUser currentUser];
+    PFRelation *relation = [user relationForKey:@"dealsSaved"];
+    [DatabaseManager getPFObjectFromAppDeal:appDeal withCompletion:^(PFObject *object) {
+        if (object != nil) {
+            [relation addObject:object];
+            [user saveInBackgroundWithBlock:^(BOOL succeeded, NSError * _Nullable error) {
+                if (succeeded) {
+                    completion(nil);
+                }
+                else {
+                    completion(error);
+                }
+            }];
+        }
+    }];
+}
+
++ (void)removeDeal:(AppDeal *)appDeal withCompletion:(void(^)(NSError *error))completion {
+    PFUser *user = [PFUser currentUser];
+    PFRelation *relation = [user relationForKey:@"dealsSaved"];
+    [DatabaseManager getPFObjectFromAppDeal:appDeal withCompletion:^(PFObject *object) {
+        if (object != nil) {
+            [relation removeObject:object];
+            [user saveInBackgroundWithBlock:^(BOOL succeeded, NSError * _Nullable error) {
+                if (succeeded) {
+                    completion(nil);
+                }
+                else {
+                    completion(error);
+                }
+            }];
+        }
+    }];
+    
+}
+
++ (void)getSavedDeals:(NSString *)identifier withCompletion:(void(^)(_Bool hasDeal, NSError *error))completion {
+    PFUser *user = [PFUser currentUser];
+    PFRelation *relation = [user relationForKey:@"dealsSaved"];
+    [[relation query] findObjectsInBackgroundWithBlock:^(NSArray * _Nullable objects, NSError * _Nullable error) {
+        if (objects.count > 0) {
+            for (PFObject *obj in objects) {
+                if ([obj.objectId isEqualToString:identifier]) {
+                    completion(YES, nil);
+                }
+            }
+        }
+        else {
+            completion(NO, error);
+        }
+    }];
+}
+
++ (void)getPFObjectFromAppDeal:(AppDeal *)appDeal withCompletion:(void(^)(PFObject *object))completion {
+    PFQuery *dealQuery = [Deal query];
+    [dealQuery getObjectInBackgroundWithId:appDeal.identifier block:^(PFObject * _Nullable object, NSError * _Nullable error) {
+        if (!error) {
+            completion(object);
+        }
+        else {
+            completion(nil);
+        }
+    }];
+}
 
 + (PFFileObject *)getPFFileFromImage: (UIImage * _Nullable)image {
     NSData *imageData = UIImagePNGRepresentation(image);
