@@ -19,8 +19,12 @@ NS_ASSUME_NONNULL_BEGIN
 + (void)loginUser:(NSString *)username password:(NSString *)password withCompletion:(void(^)(NSError *error))completion;
 + (void)fetchItem:(NSString *)barcode viewController:(UIViewController *)vc withCompletion:(void(^)(NSArray *deals,NSError *error))completion;
 + (void)saveDeal:(AppDeal *)appDeal withCompletion:(void(^)(NSError *error))completion;
-+ (void)getSavedDeals:(NSString *)identifier withCompletion:(void(^)(_Bool hasDeal, NSError *error))completion;
++ (void)isCurrentDealSaved:(NSString *)identifier withCompletion:(void(^)(_Bool hasDeal, NSError *error))completion;
 + (void)removeDeal:(AppDeal *)appDeal withCompletion:(void(^)(NSError *error))completion;
++ (void)fetchSavedDeals:(void(^)(NSArray *deals, NSError *error))completion;
++ (void)getCurrentUser:(void(^)(User *user))completion;
++ (void)logoutUser:(UIViewController *)vc;
++ (void)updateUser:(User *)user;
 
 @end
 

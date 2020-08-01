@@ -10,4 +10,8 @@
 
 @implementation User
 
++ (NSString *)getfullname:(User *)user {
+    return [[user.firstName stringByAppendingString:@" "] stringByAppendingString:user.lastName];
+}
+
 @end

@@ -37,7 +37,7 @@
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:YES];
     
-    [DatabaseManager getSavedDeals:self.deal.identifier withCompletion:^(bool hasDeal, NSError * _Nonnull error) {
+    [DatabaseManager isCurrentDealSaved:self.deal.identifier withCompletion:^(bool hasDeal, NSError * _Nonnull error) {
         if (error) {
             NSLog(@"Could not determine if deal was saved");
         }
