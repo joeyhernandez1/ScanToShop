@@ -25,6 +25,12 @@
 
 @implementation RegisterViewController
 
+- (void)viewDidLoad {
+    [super viewDidLoad];
+    
+    [self registerForKeyboardNotifications];
+}
+
 - (IBAction)onViewTap:(id)sender {
     [self.view endEditing:YES];
 }
@@ -153,6 +159,30 @@
     NSRange range = NSMakeRange(0, [self.passwordField.text length]);
      
     return [regex numberOfMatchesInString:self.passwordField.text options:0 range:range] > 0;
+}
+
+- (void)registerForKeyboardNotifications {
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(keyboardWillShow:)
+                                                 name:UIKeyboardWillShowNotification object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(keyboardWillBeHidden:)
+                                                 name:UIKeyboardWillHideNotification object:nil];
+}
+
+- (void)keyboardWillShow:(NSNotification*)aNotification {
+    NSDictionary* info = [aNotification userInfo];
+    CGSize keyboardSize = [[info objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue].size;
+    [UIView animateWithDuration:0.2 animations:^{
+        self.view.frame = CGRectMake(self.view.frame.origin.x, 0 - (keyboardSize.height/1.5), self.view.frame.size.width, self.view.frame.size.height);
+    }];
+}
+
+- (void)keyboardWillBeHidden:(NSNotification*)aNotification {
+    [UIView animateWithDuration:0.2 animations:^{
+        self.view.frame = CGRectMake(self.view.frame.origin.x, 0, self.view.frame.size.width, self.view.frame.size.height);
+    }];
 }
 
 @end

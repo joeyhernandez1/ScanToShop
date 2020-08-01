@@ -7,6 +7,7 @@
 //
 
 #import "SettingsViewController.h"
+#import "DatabaseManager.h"
 
 @interface SettingsViewController ()
 
@@ -14,11 +15,8 @@
 
 @implementation SettingsViewController
 
-- (void)viewDidLoad {
-    [super viewDidLoad];
-}
-
 - (IBAction)onLogoutTap:(id)sender {
+    [DatabaseManager logoutUser:self];
 }
 
 - (IBAction)onDeleteTap:(id)sender {
