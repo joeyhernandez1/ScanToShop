@@ -7,6 +7,8 @@
 //
 
 #import "DatabaseManager.h"
+#import "LoginViewController.h"
+#import "SceneDelegate.h"
 #import "AlertManager.h"
 #import "AppDeal.h"
 #import "AppItem.h"
@@ -14,6 +16,16 @@
 #import "Item.h"
 
 @implementation DatabaseManager
+
++ (void)updateUser:(User *)user {
+    PFUser *currentUser = [PFUser currentUser];
+    currentUser.username = user.username;
+    currentUser.email = user.email;
+    currentUser[@"first_name"] = user.firstName;
+    currentUser[@"last_name"] = user.lastName;
+    currentUser[@"image"] = [DatabaseManager getPFFileFromImageData:user.profileImageData];
+    [currentUser saveInBackground];
+}
 
 + (void)saveUser:(User *)user withCompletion:(void(^)(NSError *error))completion {
     PFUser *newUser = [PFUser new];
@@ -35,6 +47,17 @@
     }];
 }
 
++ (void)deleteUser:(UIViewController *)vc {
+    if ([PFUser currentUser] != nil) {
+        [[PFUser currentUser] deleteInBackgroundWithBlock:^(BOOL succeeded, NSError * _Nullable error) {
+            if (succeeded)
+            {
+                [DatabaseManager logoutUser:vc];
+            }
+        }];
+    }
+}
+
 + (void)loginUser:(NSString *)username password:(NSString *)password withCompletion:(void(^)(NSError *error))completion {
     [PFUser logInWithUsernameInBackground:username password:password block:^(PFUser * user, NSError *  error) {
         if (error) {
@@ -44,6 +67,44 @@
             NSLog(@"User logged in successfully");
         }
         completion(error);
+    }];
+}
+
++ (void)logoutUser:(UIViewController *)vc {
+    SceneDelegate *sceneDelegate = (SceneDelegate *) vc.view.window.windowScene.delegate;
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+    LoginViewController *loginViewController = [storyboard instantiateViewControllerWithIdentifier:@"LoginViewController"];
+    sceneDelegate.window.rootViewController = loginViewController;
+    
+    [PFUser logOutInBackgroundWithBlock:^(NSError * _Nullable error) {
+        if (error != nil) {
+            NSLog(@"Error: %@", error.localizedDescription);
+        }
+        else {
+            NSLog(@"Logout successful!");
+        }
+    }];
+}
+
++ (void)getCurrentUser:(void(^)(User *user))completion {
+    PFUser *user = [PFUser currentUser];
+    User *currentUser = [User new];
+    currentUser.firstName = user[@"first_name"];
+    currentUser.lastName = user[@"last_name"];
+    currentUser.email = user[@"email"];
+    currentUser.username = user[@"username"];
+    PFFileObject *profileImage = user[@"image"];
+    [profileImage getDataInBackgroundWithBlock:^(NSData * _Nullable ImageData, NSError * _Nullable error) {
+        if (!error) {
+            currentUser.profileImageData = ImageData;
+            
+        }
+    }];
+    [DatabaseManager fetchSavedDeals:^(NSArray * _Nonnull deals, NSError * _Nonnull error) {
+        if (!error) {
+            currentUser.dealsSaved = (NSMutableArray *)deals;
+            completion(currentUser);
+        }
     }];
 }
 
@@ -74,10 +135,28 @@
     PFQuery *dealsQuery = [Deal query];
     [dealsQuery includeKey:@"item"];
     [dealsQuery whereKey:@"item" equalTo:item];
+    [dealsQuery orderByAscending:@"price"];
     
     [dealsQuery findObjectsInBackgroundWithBlock:^(NSArray * _Nullable objects, NSError * _Nullable error) {
         if (objects.count > 0) {
             completion(objects, nil);
+        }
+        else {
+            completion(nil, error);
+        }
+    }];
+}
+
++ (void)fetchSavedDeals:(void(^)(NSArray *deals, NSError *error))completion {
+    PFUser *user = [PFUser currentUser];
+    PFRelation *relation = [user relationForKey:@"dealsSaved"];
+    PFQuery *query = [relation query];
+    [query includeKey:@"dealsSaved.item"];
+    [query findObjectsInBackgroundWithBlock:^(NSArray * _Nullable objects, NSError * _Nullable error) {
+        if (objects.count > 0) {
+           [DatabaseManager createSavedDealsFromFetchWithBlock:objects withCompletion:^(NSArray *appDeals) {
+               completion(appDeals, nil);
+           }];
         }
         else {
             completion(nil, error);
@@ -97,6 +176,25 @@
                 dispatch_group_leave(group);
             }];
         }
+    }
+    dispatch_group_notify(group, dispatch_get_main_queue(), ^{
+        completion(result);
+    });
+}
+
++ (void)createSavedDealsFromFetchWithBlock:(NSArray *)serverDeals withCompletion:(void(^)(NSArray *appDeals))completion{
+    NSMutableArray *result = [NSMutableArray array];
+    dispatch_group_t group = dispatch_group_create();
+    for (PFObject *obj in serverDeals) {
+        dispatch_group_enter(group);
+        [DatabaseManager createDealFromObjectWithBlock:obj withCompletion:^(Deal *deal) {
+            if (deal != nil) {
+                [DatabaseManager createDealFromServerDealWithBlock:deal withCompletion:^(AppDeal *appDeal, NSError *error) {
+                    [result addObject:appDeal];
+                    dispatch_group_leave(group);
+                }];
+            }
+        }];
     }
     dispatch_group_notify(group, dispatch_get_main_queue(), ^{
         completion(result);
@@ -129,7 +227,45 @@
     else {
         return nil;
     }
+    deal.objectId = object.objectId;
     return deal;
+}
+
++ (void)createDealFromObjectWithBlock:(PFObject *)object withCompletion:(void(^)(Deal *deal))completion {
+    Deal *deal = [Deal new];
+    if (object[@"sellerPlatform"] != nil && [object[@"sellerPlatform"] isKindOfClass:[NSString class]]) {
+        deal.sellerPlatform = object[@"sellerPlatform"];
+    }
+    else {
+        completion(nil);
+    }
+    if (object[@"price"] != nil && [object[@"price"] isKindOfClass:[NSNumber class]]) {
+        deal.price = object[@"price"];
+    }
+    else {
+        completion(nil);
+    }
+    if (object[@"link"] != nil && [object[@"link"] isKindOfClass:[NSString class]]) {
+        deal.platformItemURL = object[@"link"];
+    }
+    else {
+        completion(nil);
+    }
+    if (object[@"item"] != nil && [object[@"item"] isKindOfClass:[PFObject class]]) {
+        [DatabaseManager createServerItemFromPFObjectWithBlock:object[@"item"] withCompletion:^(Item *item) {
+            if (item != nil) {
+                deal.item = item;
+                deal.objectId = object.objectId;
+                completion(deal);
+            }
+            else {
+                completion(nil);
+            }
+        }];
+    }
+    else {
+        completion(nil);
+    }
 }
 
 + (void)createDealFromServerDealWithBlock:(Deal *)serverDeal withCompletion:(void(^)(AppDeal *appDeal ,NSError *error))completion {
@@ -137,6 +273,7 @@
     deal.platformItemURL = [NSURL URLWithString:serverDeal.platformItemURL];
     deal.price = serverDeal.price;
     deal.sellerPlatform = serverDeal.sellerPlatform;
+    deal.identifier = serverDeal.objectId;
     [DatabaseManager createItemWithBlock:serverDeal.item withCompletion:^(AppItem *appItem, NSError *error) {
         if (error) {
             NSLog(@"Error at createDealFromServerDealWithBlock");
@@ -171,6 +308,30 @@
     return serverItem;
 }
 
++ (void)createServerItemFromPFObjectWithBlock:(PFObject *)serverObject withCompletion:(void(^)(Item *item))completion {
+    Item *serverItem = [Item new];
+    PFQuery *itemQuery = [Item query];
+    [itemQuery getObjectInBackgroundWithId:serverObject.objectId block:^(PFObject * _Nullable object, NSError * _Nullable error) {
+        if (object[@"name"] != nil && [object[@"name"] isKindOfClass:[NSString class]]) {
+            serverItem.name = object[@"name"];
+            NSLog(@"%@",serverItem.name);
+        }
+        if (object[@"info"] != nil && [object[@"info"] isKindOfClass:[NSString class]]) {
+            serverItem.information = object[@"info"];
+            NSLog(@"%@",serverItem.information);
+        }
+        if (object[@"barcode"] != nil && [object[@"barcode"] isKindOfClass:[NSString class]]) {
+            serverItem.barcode = object[@"barcode"];
+            NSLog(@"%@",serverItem.barcode);
+        }
+        if (object[@"image"] != nil) {
+            serverItem.image = object[@"image"];
+        }
+        serverItem.objectId = object.objectId;
+        completion(serverItem);
+    }];
+}
+
 + (void)createItemWithBlock:(Item *)serverItem withCompletion:(void(^)(AppItem *appItem ,NSError *error))completion {
     AppItem *item = [AppItem new];
     item.barcode = serverItem.barcode;
@@ -188,6 +349,71 @@
     }];
 }
 
++ (void)saveDeal:(AppDeal *)appDeal withCompletion:(void(^)(NSError *error))completion {
+    PFUser *user = [PFUser currentUser];
+    PFRelation *relation = [user relationForKey:@"dealsSaved"];
+    [DatabaseManager getPFObjectFromAppDeal:appDeal withCompletion:^(PFObject *object) {
+        if (object != nil) {
+            [relation addObject:object];
+            [user saveInBackgroundWithBlock:^(BOOL succeeded, NSError * _Nullable error) {
+                if (succeeded) {
+                    completion(nil);
+                }
+                else {
+                    completion(error);
+                }
+            }];
+        }
+    }];
+}
+
++ (void)removeDeal:(AppDeal *)appDeal withCompletion:(void(^)(NSError *error))completion {
+    PFUser *user = [PFUser currentUser];
+    PFRelation *relation = [user relationForKey:@"dealsSaved"];
+    [DatabaseManager getPFObjectFromAppDeal:appDeal withCompletion:^(PFObject *object) {
+        if (object != nil) {
+            [relation removeObject:object];
+            [user saveInBackgroundWithBlock:^(BOOL succeeded, NSError * _Nullable error) {
+                if (succeeded) {
+                    completion(nil);
+                }
+                else {
+                    completion(error);
+                }
+            }];
+        }
+    }];
+    
+}
+
++ (void)isCurrentDealSaved:(NSString *)identifier withCompletion:(void(^)(_Bool hasDeal, NSError *error))completion {
+    PFUser *user = [PFUser currentUser];
+    PFRelation *relation = [user relationForKey:@"dealsSaved"];
+    [[relation query] findObjectsInBackgroundWithBlock:^(NSArray * _Nullable objects, NSError * _Nullable error) {
+        if (objects.count > 0) {
+            for (PFObject *obj in objects) {
+                if ([obj.objectId isEqualToString:identifier]) {
+                    completion(YES, nil);
+                }
+            }
+        }
+        else {
+            completion(NO, error);
+        }
+    }];
+}
+
++ (void)getPFObjectFromAppDeal:(AppDeal *)appDeal withCompletion:(void(^)(PFObject *object))completion {
+    PFQuery *dealQuery = [Deal query];
+    [dealQuery getObjectInBackgroundWithId:appDeal.identifier block:^(PFObject * _Nullable object, NSError * _Nullable error) {
+        if (!error) {
+            completion(object);
+        }
+        else {
+            completion(nil);
+        }
+    }];
+}
 
 + (PFFileObject *)getPFFileFromImage: (UIImage * _Nullable)image {
     NSData *imageData = UIImagePNGRepresentation(image);

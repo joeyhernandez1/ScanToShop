@@ -16,6 +16,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong) NSString *sellerPlatform;
 @property (nonatomic, strong) NSURL *platformItemURL;
 @property (nonatomic, strong) NSNumber *price;
+@property (nonatomic, strong) NSString *identifier;
 @property (nonatomic, strong) AppItem *item;
 
 @end
