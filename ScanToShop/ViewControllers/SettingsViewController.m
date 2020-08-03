@@ -7,7 +7,7 @@
 //
 
 #import "SettingsViewController.h"
-#import "DatabaseManager.h"
+#import "AlertManager.h"
 
 @interface SettingsViewController ()
 
@@ -16,10 +16,11 @@
 @implementation SettingsViewController
 
 - (IBAction)onLogoutTap:(id)sender {
-    [DatabaseManager logoutUser:self];
+    [AlertManager logoutAlert:self];
 }
 
 - (IBAction)onDeleteTap:(id)sender {
+    [AlertManager deleteAccountAlert:self];
 }
 
 @end

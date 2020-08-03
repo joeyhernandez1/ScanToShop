@@ -29,6 +29,8 @@ typedef NS_ENUM(NSInteger, dealErrorType) {
 + (void)dealNotFoundAlert:(UIViewController *)vc errorType:(dealErrorType)error;
 + (void)linkCannotOpenError:(UIViewController *)vc;
 + (void)dealNotSavedAlert:(UIViewController *)vc;
++ (void)logoutAlert:(UIViewController *)vc;
++ (void)deleteAccountAlert:(UIViewController *)vc;
 
 @end
 

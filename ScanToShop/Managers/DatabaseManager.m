@@ -47,6 +47,17 @@
     }];
 }
 
++ (void)deleteUser:(UIViewController *)vc {
+    if ([PFUser currentUser] != nil) {
+        [[PFUser currentUser] deleteInBackgroundWithBlock:^(BOOL succeeded, NSError * _Nullable error) {
+            if (succeeded)
+            {
+                [DatabaseManager logoutUser:vc];
+            }
+        }];
+    }
+}
+
 + (void)loginUser:(NSString *)username password:(NSString *)password withCompletion:(void(^)(NSError *error))completion {
     [PFUser logInWithUsernameInBackground:username password:password block:^(PFUser * user, NSError *  error) {
         if (error) {

@@ -78,7 +78,7 @@
         <!--Register-->
         <scene sceneID="HwH-LB-MKT">
             <objects>
-                <viewController id="SAB-Fm-ufq" customClass="RegisterViewController" sceneMemberID="viewController">
+                <viewController modalPresentationStyle="fullScreen" id="SAB-Fm-ufq" customClass="RegisterViewController" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="0iQ-Qd-wIc">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>

@@ -7,6 +7,7 @@
 //
 
 #import "AlertManager.h"
+#import "DatabaseManager.h"
 
 @implementation AlertManager
 
@@ -138,6 +139,50 @@
          NSLog(@"Cancel action performed");
      }];
     [alert addAction:cancelAction];
+    [vc presentViewController:alert animated:YES completion:nil];
+}
+
++ (void)logoutAlert:(UIViewController *)vc {
+    UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Logout"
+                                                                   message:@"Are you sure you want to logout?"
+                                                            preferredStyle:(UIAlertControllerStyleAlert)];
+    UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"Cancel"
+                                                            style:UIAlertActionStyleCancel
+                                                          handler:^(UIAlertAction * _Nonnull action) {
+         NSLog(@"Cancel action performed");
+     }];
+    
+    UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"Logout"
+                                                       style:UIAlertActionStyleDefault
+                                                     handler:^(UIAlertAction * _Nonnull action) {
+        NSLog(@"OK action performed.");
+        [DatabaseManager logoutUser:vc];
+    }];
+    
+    [alert addAction:okAction];
+    [alert addAction:cancelAction];
+    [vc presentViewController:alert animated:YES completion:nil];
+}
+
++ (void)deleteAccountAlert:(UIViewController *)vc {
+    UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Delete Account"
+                                                                   message:@"This action cannot be undone and all user data will be lost. Do you still wish to continue?"
+                                                            preferredStyle:(UIAlertControllerStyleAlert)];
+    UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"Cancel"
+                                                            style:UIAlertActionStyleCancel
+                                                          handler:^(UIAlertAction * _Nonnull action) {
+         NSLog(@"Cancel action performed");
+     }];
+    
+    UIAlertAction *deleteAction = [UIAlertAction actionWithTitle:@"Delete"
+                                                       style:UIAlertActionStyleDefault
+                                                     handler:^(UIAlertAction * _Nonnull action) {
+        NSLog(@"delete action performed.");
+        [DatabaseManager deleteUser:vc];
+    }];
+    
+    [alert addAction:cancelAction];
+    [alert addAction:deleteAction];
     [vc presentViewController:alert animated:YES completion:nil];
 }
 

@@ -25,6 +25,7 @@ NS_ASSUME_NONNULL_BEGIN
 + (void)getCurrentUser:(void(^)(User *user))completion;
 + (void)logoutUser:(UIViewController *)vc;
 + (void)updateUser:(User *)user;
++ (void)deleteUser:(UIViewController *)vc;
 
 @end
 
