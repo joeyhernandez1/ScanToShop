@@ -19,6 +19,7 @@
 @property (nonatomic) AVCaptureVideoDataOutput *videoDataOutput;
 @property (nonatomic) AVCaptureVideoPreviewLayer *videoPreviewLayer;
 @property (strong, nonatomic) NSString *barcode;
+@property BOOL didScanOnce;
 
 @end
 
@@ -36,6 +37,7 @@
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
     
+    self.didScanOnce = NO;
     [self checkPermissions];
 }
 
@@ -116,7 +118,7 @@
         if (error) {
             return;
         }
-        if (barcodes.count > 0) {
+        if (barcodes.count > 0 && !self.didScanOnce) {
             self.barcode = barcodes.firstObject.rawValue;
             [self performSegueWithIdentifier:@"dealsSegue" sender:nil];
         }
@@ -165,6 +167,7 @@
     if ([segue.identifier isEqualToString:@"dealsSegue"]) {
         DealsViewController *dealsController = [segue destinationViewController];
         dealsController.barcode = self.barcode;
+        self.didScanOnce = YES;
     }
 }
 

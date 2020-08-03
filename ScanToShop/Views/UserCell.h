@@ -7,8 +7,11 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "User.h"
 
 NS_ASSUME_NONNULL_BEGIN
+
+@protocol UserCellDelegate;
 
 @interface UserCell : UITableViewCell
 
@@ -16,6 +19,14 @@ NS_ASSUME_NONNULL_BEGIN
 @property (weak, nonatomic) IBOutlet UILabel *nameLabel;
 @property (weak, nonatomic) IBOutlet UILabel *usernameLabel;
 @property (weak, nonatomic) IBOutlet UILabel *dealsCounterLabel;
+@property (weak, nonatomic) id<UserCellDelegate> delegate;
+@property (strong, nonatomic) User *user;
+
+@end
+
+@protocol UserCellDelegate
+
+- (void)userCell:(UserCell *)userCell didTapProfileImage:(UIImage *)image;
 
 @end
 

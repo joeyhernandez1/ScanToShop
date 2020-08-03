@@ -16,7 +16,8 @@
 @interface ProfileViewController () <UITableViewDelegate,
                                      UITableViewDataSource,
                                      UIImagePickerControllerDelegate,
-                                     UINavigationControllerDelegate>
+                                     UINavigationControllerDelegate,
+                                     UserCellDelegate>
 
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 @property (strong, nonatomic) User *user;
@@ -28,8 +29,9 @@
 -(void)viewDidLoad {
     [super viewDidLoad];
     
-     [self.tableView registerNib:[UINib nibWithNibName:@"UserCell" bundle:nil]  forCellReuseIdentifier:@"UserCell"];
+    [self.tableView registerNib:[UINib nibWithNibName:@"UserCell" bundle:nil]  forCellReuseIdentifier:@"UserCell"];
 }
+
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:YES];
     
@@ -39,27 +41,25 @@
              [self.tableView reloadData];
          }
      }];
+    
 }
 
 - (void)setUser:(User *)user {
     _user = user;
-    [self.tableView reloadData];
 }
+
+#pragma mark - TableView Delegates
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     if (indexPath.row == 0) {
         UserCell *cell = [self.tableView dequeueReusableCellWithIdentifier:@"UserCell"];
-        cell.nameLabel.text = [User getfullname:_user];
-        cell.usernameLabel.text = _user.username;
-        cell.dealsCounterLabel.text = [NSString stringWithFormat:@"%@",  @(_user.dealsSaved.count)];
-        cell.profileImageView.image = [UIImage imageWithData:_user.profileImageData];
-        cell.profileImageView.layer.masksToBounds = YES;
-        cell.profileImageView.layer.cornerRadius = cell.profileImageView.layer.bounds.size.width / 2;
+        cell.delegate = self;
+        [cell setUser:_user];
         return cell;
     }
     else {
         DealCell *cell = [self.tableView dequeueReusableCellWithIdentifier:@"DealCell"];
-        AppDeal *deal = _user.dealsSaved[indexPath.row-1];
+        AppDeal *deal = _user.dealsSaved[indexPath.row - 1];
         [cell setDeal:deal];
         return cell;
     }
@@ -69,7 +69,54 @@
     return _user.dealsSaved.count + 1;
 }
 
-- (void) pickImage {
+#pragma mark - UserCell Delegate
+
+- (void)userCell:(UserCell *)userCell didTapProfileImage:(UIImage *)image {
+    UIImageView *fullScreenImageView = [[UIImageView alloc] initWithImage:userCell.profileImageView.image];
+    fullScreenImageView.frame = [[UIScreen mainScreen] bounds];
+    fullScreenImageView.backgroundColor = [UIColor blackColor];
+    fullScreenImageView.contentMode = UIViewContentModeScaleAspectFit;
+    fullScreenImageView.userInteractionEnabled = YES;
+    
+    UISwipeGestureRecognizer *swipeRecognizer = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(dismissFullScreenImage:)];
+    swipeRecognizer.direction = UISwipeGestureRecognizerDirectionDown;
+    [fullScreenImageView addGestureRecognizer:swipeRecognizer];
+    fullScreenImageView.alpha = 0;
+    [UIView animateWithDuration:0.625 animations:^{
+        [self.view addSubview:fullScreenImageView];
+        [self.navigationController setNavigationBarHidden:YES];
+        [self.tabBarController.tabBar setHidden:YES];
+        fullScreenImageView.alpha = 1;
+    }];
+}
+
+- (void)dismissFullScreenImage:(UISwipeGestureRecognizer *)sender {
+    self.view.alpha = 0;
+    [UIView animateWithDuration:0.65 animations:^{
+        [self.navigationController setNavigationBarHidden:NO];
+        [self.tabBarController.tabBar setHidden:NO];
+        [sender.view removeFromSuperview];
+        self.view.alpha = 1;
+    }];
+}
+
+#pragma mark - UIImagePickerDelegate / Logic
+
+- (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary<NSString *,id> *)info {
+
+    UIImage *originalImage = info[UIImagePickerControllerOriginalImage];
+    UIImage *editedImage = info[UIImagePickerControllerEditedImage];
+    [self updateProfileImage: originalImage ?: editedImage];
+
+    [self dismissViewControllerAnimated:YES completion:nil];
+}
+
+- (void)updateProfileImage:(UIImage *)image {
+    CGSize size = CGSizeMake(400, 400);
+    _user.profileImageData = UIImagePNGRepresentation([self resizeImage:image withSize:size]);
+}
+
+- (void)pickImage {
     UIImagePickerController *imagePickerVC = [UIImagePickerController new];
     imagePickerVC.delegate = self;
     imagePickerVC.allowsEditing = YES;
@@ -98,6 +145,8 @@
     
     return newImage;
 }
+
+#pragma mark - Navigation
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
     if ([segue.identifier isEqualToString:@"savedDealsSegue"]) {

@@ -75,7 +75,6 @@
     }];
 }
 
-
 + (void)getCurrentUser:(void(^)(User *user))completion {
     PFUser *user = [PFUser currentUser];
     User *currentUser = [User new];
@@ -87,12 +86,13 @@
     [profileImage getDataInBackgroundWithBlock:^(NSData * _Nullable ImageData, NSError * _Nullable error) {
         if (!error) {
             currentUser.profileImageData = ImageData;
-            [DatabaseManager fetchSavedDeals:^(NSArray * _Nonnull deals, NSError * _Nonnull error) {
-                if (!error) {
-                    currentUser.dealsSaved = (NSMutableArray *)deals;
-                    completion(currentUser);
-                }
-            }];
+            
+        }
+    }];
+    [DatabaseManager fetchSavedDeals:^(NSArray * _Nonnull deals, NSError * _Nonnull error) {
+        if (!error) {
+            currentUser.dealsSaved = (NSMutableArray *)deals;
+            completion(currentUser);
         }
     }];
 }

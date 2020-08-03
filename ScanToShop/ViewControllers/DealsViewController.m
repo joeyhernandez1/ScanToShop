@@ -22,8 +22,8 @@
 
 @implementation DealsViewController
 
-- (void)viewWillAppear:(BOOL)animated {
-    [super viewWillAppear:YES];
+-(void)viewDidLoad {
+    [super viewDidLoad];
     
     [DatabaseManager fetchItem:self.barcode viewController:self withCompletion:^(NSArray * _Nonnull deals, NSError * _Nonnull error) {
         if (deals.count > 0) {
