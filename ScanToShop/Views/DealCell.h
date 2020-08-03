@@ -12,9 +12,10 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface DealCell : UITableViewCell
 
-@property (weak, nonatomic) IBOutlet UILabel *itemNameLabel;
-@property (weak, nonatomic) IBOutlet UILabel *sellerPlatformLabel;
-@property (weak, nonatomic) IBOutlet UILabel *priceLabel;
+@property (strong, nonatomic) IBOutlet UILabel *itemNameLabel;
+@property (strong, nonatomic) IBOutlet UILabel *sellerPlatformLabel;
+@property (strong, nonatomic) IBOutlet UILabel *priceLabel;
+@property (strong, nonatomic) IBOutlet UIImageView *itemImageView;
 
 @end
 

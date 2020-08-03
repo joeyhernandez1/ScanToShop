@@ -263,6 +263,7 @@
                                             </subviews>
                                         </tableViewCellContentView>
                                         <connections>
+                                            <outlet property="itemImageView" destination="Z9e-hT-cWG" id="fPB-1E-fCd"/>
                                             <outlet property="itemNameLabel" destination="DPC-jM-U3W" id="7je-ey-97p"/>
                                             <outlet property="priceLabel" destination="eYT-kD-EEh" id="9En-G5-Fg5"/>
                                             <outlet property="sellerPlatformLabel" destination="E9I-ZI-41O" id="Ek8-8j-uuO"/>

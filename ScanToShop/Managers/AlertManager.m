@@ -10,7 +10,7 @@
 
 @implementation AlertManager
 
-+ (void)loginAlert:(errorType)error errorString:(nullable NSString *) errorString viewController:(UIViewController *)vc {
++ (void)loginAlert:(loginErrorType)error errorString:(nullable NSString *) errorString viewController:(UIViewController *)vc {
     UIAlertController *alert;
     UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"Cancel"
                                                            style:UIAlertActionStyleCancel
@@ -83,6 +83,34 @@
     [vc presentViewController:alert animated:YES completion:^{
         NSLog(@"Finished presenting alert");
     }];
+}
+
++ (void)dealNotFoundAlert:(UIViewController *)vc errorType:(dealErrorType)error {
+    UIAlertController *alert;
+    UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"OK"
+                                                       style:UIAlertActionStyleDefault
+                                                     handler:^(UIAlertAction * _Nonnull action) {
+        NSLog(@"OK action performed.");
+        [vc.navigationController popToRootViewControllerAnimated:YES];
+    }];
+    
+    switch (error) {
+        case NoDealFoundError:
+            alert = [UIAlertController alertControllerWithTitle:@"No Deals Found"
+                                                        message:@"There are no current deals right now for this item."
+                                                 preferredStyle:(UIAlertControllerStyleAlert)];
+            [alert addAction:okAction];
+            break;
+            
+        case NoItemFoundError:
+            alert = [UIAlertController alertControllerWithTitle:@"No Item Found"
+                                                        message:@"Item is currently unavailable."
+                                                 preferredStyle:(UIAlertControllerStyleAlert)];
+            [alert addAction:okAction];
+            break;
+    }
+    
+    [vc presentViewController:alert animated:YES completion:nil];
 }
 
 @end
