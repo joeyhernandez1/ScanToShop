@@ -22,8 +22,8 @@
 
 @implementation DealsViewController
 
-- (void)viewWillAppear:(BOOL)animated {
-    [super viewWillAppear:YES];
+-(void)viewDidLoad {
+    [super viewDidLoad];
     
     [DatabaseManager fetchItem:self.barcode viewController:self withCompletion:^(NSArray * _Nonnull deals, NSError * _Nonnull error) {
         if (deals.count > 0) {
@@ -40,10 +40,7 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     DealCell *cell = [tableView dequeueReusableCellWithIdentifier:@"DealCell"];
     AppDeal *deal = self.deals[indexPath.row];
-    cell.itemImageView.image = [UIImage imageWithData:deal.item.image];
-    cell.itemNameLabel.text = deal.item.name;
-    cell.sellerPlatformLabel.text = deal.sellerPlatform;
-    cell.priceLabel.text = [deal.price stringValue];
+    [cell setDeal:deal];
     return cell;
 }
 
@@ -53,7 +50,6 @@
 
 - (void)didScanBarcode:(NSString *)barcode {
     self.barcode = barcode;
-    [self.tableView reloadData];
 }
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {

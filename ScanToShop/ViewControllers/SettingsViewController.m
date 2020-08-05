@@ -7,6 +7,7 @@
 //
 
 #import "SettingsViewController.h"
+#import "AlertManager.h"
 
 @interface SettingsViewController ()
 
@@ -14,14 +15,12 @@
 
 @implementation SettingsViewController
 
-- (void)viewDidLoad {
-    [super viewDidLoad];
-}
-
 - (IBAction)onLogoutTap:(id)sender {
+    [AlertManager logoutAlert:self];
 }
 
 - (IBAction)onDeleteTap:(id)sender {
+    [AlertManager deleteAccountAlert:self];
 }
 
 @end

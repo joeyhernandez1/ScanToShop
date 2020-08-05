@@ -10,15 +10,12 @@
 
 @implementation DealCell
 
-- (void)awakeFromNib {
-    [super awakeFromNib];
-    // Initialization code
-}
-
-- (void)setSelected:(BOOL)selected animated:(BOOL)animated {
-    [super setSelected:selected animated:animated];
-
-    // Configure the view for the selected state
+- (void)setDeal:(AppDeal *)deal {
+    _deal = deal;
+    self.itemImageView.image = [UIImage imageWithData:_deal.item.image];
+    self.itemNameLabel.text = _deal.item.name;
+    self.sellerPlatformLabel.text = _deal.sellerPlatform;
+    self.priceLabel.text = [_deal.price stringValue];
 }
 
 @end

@@ -32,6 +32,8 @@
 		4E1C21BE24C7924400669C4D /* User.m in Sources */ = {isa = PBXBuildFile; fileRef = 4E1C21BD24C7924400669C4D /* User.m */; };
 		4E1C21C724D12CEE00669C4D /* AppItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 4E1C21C624D12CEE00669C4D /* AppItem.m */; };
 		4E1C21CA24D1D6E900669C4D /* AppDeal.m in Sources */ = {isa = PBXBuildFile; fileRef = 4E1C21C924D1D6E900669C4D /* AppDeal.m */; };
+		4E1C21D224D4BBE800669C4D /* UserCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4E1C21D124D4BBE800669C4D /* UserCell.xib */; };
+		4E1C21D524D4F97500669C4D /* UserCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 4E1C21D424D4F97500669C4D /* UserCell.m */; };
 		719949778BE9982828964AF9 /* Pods_ScanToShop.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 830A4F3DB41A99D64DFC5358 /* Pods_ScanToShop.framework */; };
 /* End PBXBuildFile section */
 
@@ -102,6 +104,9 @@
 		4E1C21C624D12CEE00669C4D /* AppItem.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppItem.m; sourceTree = "<group>"; };
 		4E1C21C824D1D6E900669C4D /* AppDeal.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDeal.h; sourceTree = "<group>"; };
 		4E1C21C924D1D6E900669C4D /* AppDeal.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDeal.m; sourceTree = "<group>"; };
+		4E1C21D124D4BBE800669C4D /* UserCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = UserCell.xib; sourceTree = "<group>"; };
+		4E1C21D324D4F97500669C4D /* UserCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = UserCell.h; sourceTree = "<group>"; };
+		4E1C21D424D4F97500669C4D /* UserCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = UserCell.m; sourceTree = "<group>"; };
 		830A4F3DB41A99D64DFC5358 /* Pods_ScanToShop.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ScanToShop.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		86C7071910E479A4B0EFAC26 /* Pods-ScanToShop.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ScanToShop.release.xcconfig"; path = "Target Support Files/Pods-ScanToShop/Pods-ScanToShop.release.xcconfig"; sourceTree = "<group>"; };
 		AC0EF716635A82915210568F /* Pods_ScanToShop_ScanToShopUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ScanToShop_ScanToShopUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -224,6 +229,9 @@
 			children = (
 				4E19229724BE368900B08EE6 /* DealCell.h */,
 				4E19229824BE368900B08EE6 /* DealCell.m */,
+				4E1C21D124D4BBE800669C4D /* UserCell.xib */,
+				4E1C21D324D4F97500669C4D /* UserCell.h */,
+				4E1C21D424D4F97500669C4D /* UserCell.m */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -390,6 +398,7 @@
 				4E19225B24BD0A1800B08EE6 /* LaunchScreen.storyboard in Resources */,
 				4E19225824BD0A1800B08EE6 /* Assets.xcassets in Resources */,
 				4E19225624BD0A1700B08EE6 /* Main.storyboard in Resources */,
+				4E1C21D224D4BBE800669C4D /* UserCell.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -525,6 +534,7 @@
 				4E19228F24BD1C1600B08EE6 /* SettingsViewController.m in Sources */,
 				4E19224D24BD0A1700B08EE6 /* AppDelegate.m in Sources */,
 				4E19225E24BD0A1800B08EE6 /* main.m in Sources */,
+				4E1C21D524D4F97500669C4D /* UserCell.m in Sources */,
 				4E19228924BD1BDE00B08EE6 /* BarcodeScanViewController.m in Sources */,
 				4E1C21CA24D1D6E900669C4D /* AppDeal.m in Sources */,
 				4E1C21B524C25DCA00669C4D /* AlertManager.m in Sources */,
