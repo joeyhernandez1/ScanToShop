@@ -12,6 +12,8 @@
 #import "DealCell.h"
 #import "UserCell.h"
 #import "User.h"
+#import <JGProgressHUD/JGProgressHUD.h>
+#import "HUDManager.h"
 
 @interface ProfileViewController () <UITableViewDelegate,
                                      UITableViewDataSource,
@@ -35,13 +37,35 @@
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:YES];
     
+    JGProgressHUD *progressHUD = [JGProgressHUD progressHUDWithStyle:JGProgressHUDStyleDark];
+    progressHUD.textLabel.text = @"Fetching profile...";
+    [progressHUD showInView:self.view];
+    [HUDManager setViewLoadingState:YES viewController:self];
     [DatabaseManager getCurrentUser:^(User * _Nonnull user) {
          if (user) {
              [self setUser:user];
              [self.tableView reloadData];
+             progressHUD.indicatorView = [[JGProgressHUDSuccessIndicatorView alloc] init];
          }
+        [progressHUD dismissAfterDelay:0.1 animated:YES];
+        [HUDManager setViewLoadingState:NO viewController:self];
      }];
     
+}
+
+- (void)setLoadingState:(BOOL)isLoading {
+    if (isLoading) {
+        self.view.userInteractionEnabled = NO;
+        self.view.alpha = 0.3f;
+        [self.navigationController setNavigationBarHidden:YES];
+        [self.tabBarController.tabBar setHidden:YES];
+    }
+    else {
+        self.view.userInteractionEnabled = YES;
+        [self.navigationController setNavigationBarHidden:NO];
+        [self.tabBarController.tabBar setHidden:NO];
+        self.view.alpha = 1;
+    }
 }
 
 - (void)setUser:(User *)user {

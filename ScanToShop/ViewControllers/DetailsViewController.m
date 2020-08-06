@@ -9,6 +9,8 @@
 #import "DetailsViewController.h"
 #import "AlertManager.h"
 #import "DatabaseManager.h"
+#import <JGProgressHUD/JGProgressHUD.h>
+#import "HUDManager.h"
 
 @interface DetailsViewController ()
 
@@ -30,18 +32,22 @@
     self.itemImageView.image = [UIImage imageWithData:self.deal.item.image];
     self.itemNameLabel.text = self.deal.item.name;
     self.sellerPlatformLabel.text = self.deal.sellerPlatform;
-    self.priceLabel.text = [self.deal.price stringValue];
+    self.priceLabel.text = [NSNumberFormatter localizedStringFromNumber:self.deal.price numberStyle:NSNumberFormatterCurrencyStyle];
     self.descriptionLabel.text = self.deal.item.information;
 }
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:YES];
     
+    JGProgressHUD *progressHUD = [JGProgressHUD progressHUDWithStyle:JGProgressHUDStyleDark];
+    progressHUD.textLabel.text = @"Loading Deal...";
+    [progressHUD showInView:self.view];
+    [HUDManager setViewLoadingState:YES viewController:self];
     [DatabaseManager isCurrentDealSaved:self.deal.identifier withCompletion:^(bool hasDeal, NSError * _Nonnull error) {
         if (error) {
-            NSLog(@"Could not determine if deal was saved");
+            progressHUD.indicatorView = [[JGProgressHUDErrorIndicatorView alloc] init];
         }
-        if (hasDeal) {
+        else if (hasDeal) {
             self.isDealSavedByUser = YES;
             [self setSaveButtonOnDealStatus];
         }
@@ -49,6 +55,8 @@
             self.isDealSavedByUser = NO;
             [self setSaveButtonOnDealStatus];
         }
+        [progressHUD dismissAfterDelay:0.1 animated:YES];
+        [HUDManager setViewLoadingState:NO viewController:self];
     }];
 }
 

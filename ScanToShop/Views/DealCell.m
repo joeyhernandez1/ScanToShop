@@ -15,7 +15,11 @@
     self.itemImageView.image = [UIImage imageWithData:_deal.item.image];
     self.itemNameLabel.text = _deal.item.name;
     self.sellerPlatformLabel.text = _deal.sellerPlatform;
-    self.priceLabel.text = [_deal.price stringValue];
+    self.priceLabel.text = [DealCell formattedPrice:_deal.price];
+}
+
++ (NSString *)formattedPrice:(NSNumber *)price {
+    return [NSNumberFormatter localizedStringFromNumber:price numberStyle:NSNumberFormatterCurrencyStyle];
 }
 
 @end

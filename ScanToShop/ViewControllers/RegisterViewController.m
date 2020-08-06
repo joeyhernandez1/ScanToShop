@@ -9,6 +9,8 @@
 #import "RegisterViewController.h"
 #import "AlertManager.h"
 #import "DatabaseManager.h"
+#import "HUDManager.h"
+#import <JGProgressHUD/JGProgressHUD.h>
 #import "User.h"
 
 @interface RegisterViewController () <UIImagePickerControllerDelegate,
@@ -20,6 +22,7 @@
 @property (weak, nonatomic) IBOutlet UITextField *usernameField;
 @property (weak, nonatomic) IBOutlet UITextField *passwordField;
 @property (weak, nonatomic) IBOutlet UITextField *lastNameField;
+@property (weak, nonatomic) IBOutlet UIStackView *textFieldsView;
 
 @end
 
@@ -36,7 +39,13 @@
 }
 
 - (IBAction)onRegisterTap:(id)sender {
+    JGProgressHUD *progressHUD = [JGProgressHUD progressHUDWithStyle:JGProgressHUDStyleDark];
+    progressHUD.textLabel.text = @"Registering user...";
+    [progressHUD showInView:self.view];
+    [HUDManager setViewLoadingState:YES viewController:self];
     [self registerUser];
+    [progressHUD dismissAnimated:YES];
+    [HUDManager setViewLoadingState:NO viewController:self];
 }
 
 - (IBAction)onImageTap:(id)sender {
@@ -174,9 +183,36 @@
 - (void)keyboardWillShow:(NSNotification*)aNotification {
     NSDictionary* info = [aNotification userInfo];
     CGSize keyboardSize = [[info objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue].size;
+    CGFloat fieldButtom = [self getCurrentTextFieldBottomFrame];
     [UIView animateWithDuration:0.2 animations:^{
-        self.view.frame = CGRectMake(self.view.frame.origin.x, 0 - (keyboardSize.height/1.5), self.view.frame.size.width, self.view.frame.size.height);
+        if (self.view.frame.size.height - keyboardSize.height < fieldButtom) {
+            self.view.frame = CGRectMake(self.view.frame.origin.x, 0 - (fieldButtom - (self.view.frame.size.height - keyboardSize.height - 2)), self.view.frame.size.width, self.view.frame.size.height);
+        }
     }];
+}
+
+- (CGFloat)getCurrentTextFieldBottomFrame {
+    if ([self.firstNameField isEditing]) {
+        CGRect fieldFrame = [self.view convertRect:self.firstNameField.frame fromView:self.textFieldsView];
+        return fieldFrame.origin.y + fieldFrame.size.height;
+    }
+    else if ([self.lastNameField isEditing]) {
+        CGRect fieldFrame = [self.view convertRect:self.lastNameField.frame fromView:self.textFieldsView];
+        return fieldFrame.origin.y + fieldFrame.size.height;
+    }
+    else if ([self.emailField isEditing]) {
+        CGRect fieldFrame = [self.view convertRect:self.emailField.frame fromView:self.textFieldsView];
+        return fieldFrame.origin.y + fieldFrame.size.height;
+    }
+    else if ([self.usernameField isEditing]) {
+        CGRect fieldFrame = [self.view convertRect:self.usernameField.frame fromView:self.textFieldsView];
+        return fieldFrame.origin.y + fieldFrame.size.height;
+    }
+    else if ([self.passwordField isEditing]) {
+        CGRect fieldFrame = [self.view convertRect:self.passwordField.frame fromView:self.textFieldsView];
+        return fieldFrame.origin.y + fieldFrame.size.height;
+    }
+    return 0;
 }
 
 - (void)keyboardWillBeHidden:(NSNotification*)aNotification {

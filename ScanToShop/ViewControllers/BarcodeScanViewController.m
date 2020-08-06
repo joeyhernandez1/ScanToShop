@@ -9,7 +9,9 @@
 #import "BarcodeScanViewController.h"
 #import "DealsViewController.h"
 #import "AlertManager.h"
+#import "HUDManager.h"
 #import <AVFoundation/AVFoundation.h>
+#import <JGProgressHUD/JGProgressHUD.h>
 #import <MLKit.h>
 
 @interface BarcodeScanViewController () <AVCaptureVideoDataOutputSampleBufferDelegate>
@@ -70,7 +72,15 @@
         case AVAuthorizationStatusNotDetermined:
             [AVCaptureDevice requestAccessForMediaType:AVMediaTypeVideo completionHandler:^(BOOL granted) {
                 if (granted) {
-                    [self setupCaptureSession];
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        JGProgressHUD *progressHUD = [JGProgressHUD progressHUDWithStyle:JGProgressHUDStyleDark];
+                        progressHUD.textLabel.text = @"Getting camera ready...";
+                        [progressHUD showInView:self.previewView];
+                        [self setViewLoadingState:YES];
+                        [self setupCaptureSession];
+                        [progressHUD dismissAfterDelay:0.1 animated:YES];
+                        [self setViewLoadingState:NO];
+                    });
                 }
                 else {
                     [AlertManager videoPermissionAlert:self];
@@ -100,9 +110,10 @@
         if ([self.captureSession canAddInput:input] && [self.captureSession canAddOutput:self.videoDataOutput]) {
             [self.captureSession addInput:input];
             [self.captureSession addOutput:self.videoDataOutput];
+            [self setupLivePreview];
             dispatch_queue_t videoDataOutputQueue = dispatch_queue_create("VideoDataOutputQueue", DISPATCH_QUEUE_SERIAL);
             [self.videoDataOutput setSampleBufferDelegate:self queue:videoDataOutputQueue];
-            [self setupLivePreview];
+            
         }
     }
     else {
@@ -160,6 +171,21 @@
         case UIDeviceOrientationFaceUp:
         case UIDeviceOrientationFaceDown:
             return UIImageOrientationUp;
+    }
+}
+
+- (void)setViewLoadingState:(BOOL)isLoading {
+    if (isLoading) {
+        self.previewView.userInteractionEnabled = NO;
+        self.previewView.alpha = 0.3f;
+        [self.navigationController setNavigationBarHidden:YES];
+        [self.tabBarController.tabBar setHidden:YES];
+    }
+    else {
+        self.previewView.userInteractionEnabled = YES;
+        [self.navigationController setNavigationBarHidden:NO];
+        [self.tabBarController.tabBar setHidden:NO];
+        self.previewView.alpha = 1;
     }
 }
 
