@@ -34,6 +34,7 @@
 		4E1C21CA24D1D6E900669C4D /* AppDeal.m in Sources */ = {isa = PBXBuildFile; fileRef = 4E1C21C924D1D6E900669C4D /* AppDeal.m */; };
 		4E1C21D224D4BBE800669C4D /* UserCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4E1C21D124D4BBE800669C4D /* UserCell.xib */; };
 		4E1C21D524D4F97500669C4D /* UserCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 4E1C21D424D4F97500669C4D /* UserCell.m */; };
+		4E5A393F24D9DB9100C79A41 /* HUDManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 4E5A393E24D9DB9100C79A41 /* HUDManager.m */; };
 		719949778BE9982828964AF9 /* Pods_ScanToShop.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 830A4F3DB41A99D64DFC5358 /* Pods_ScanToShop.framework */; };
 /* End PBXBuildFile section */
 
@@ -107,6 +108,8 @@
 		4E1C21D124D4BBE800669C4D /* UserCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = UserCell.xib; sourceTree = "<group>"; };
 		4E1C21D324D4F97500669C4D /* UserCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = UserCell.h; sourceTree = "<group>"; };
 		4E1C21D424D4F97500669C4D /* UserCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = UserCell.m; sourceTree = "<group>"; };
+		4E5A393D24D9DB9100C79A41 /* HUDManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HUDManager.h; sourceTree = "<group>"; };
+		4E5A393E24D9DB9100C79A41 /* HUDManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = HUDManager.m; sourceTree = "<group>"; };
 		830A4F3DB41A99D64DFC5358 /* Pods_ScanToShop.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ScanToShop.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		86C7071910E479A4B0EFAC26 /* Pods-ScanToShop.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ScanToShop.release.xcconfig"; path = "Target Support Files/Pods-ScanToShop/Pods-ScanToShop.release.xcconfig"; sourceTree = "<group>"; };
 		AC0EF716635A82915210568F /* Pods_ScanToShop_ScanToShopUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ScanToShop_ScanToShopUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -260,6 +263,8 @@
 				4E1C21B424C25DCA00669C4D /* AlertManager.m */,
 				4E1C21B924C2650A00669C4D /* DatabaseManager.h */,
 				4E1C21BA24C2650A00669C4D /* DatabaseManager.m */,
+				4E5A393D24D9DB9100C79A41 /* HUDManager.h */,
+				4E5A393E24D9DB9100C79A41 /* HUDManager.m */,
 			);
 			path = Managers;
 			sourceTree = "<group>";
@@ -537,6 +542,7 @@
 				4E1C21D524D4F97500669C4D /* UserCell.m in Sources */,
 				4E19228924BD1BDE00B08EE6 /* BarcodeScanViewController.m in Sources */,
 				4E1C21CA24D1D6E900669C4D /* AppDeal.m in Sources */,
+				4E5A393F24D9DB9100C79A41 /* HUDManager.m in Sources */,
 				4E1C21B524C25DCA00669C4D /* AlertManager.m in Sources */,
 				4E1C21C724D12CEE00669C4D /* AppItem.m in Sources */,
 				4E19229D24BF697500B08EE6 /* Deal.m in Sources */,
@@ -721,7 +727,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.joeyrhernandez1.ScanToShop;
+				PRODUCT_BUNDLE_IDENTIFIER = com.joeyrhernandez1.ScanToShop3;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -739,7 +745,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.joeyrhernandez1.ScanToShop;
+				PRODUCT_BUNDLE_IDENTIFIER = com.joeyrhernandez1.ScanToShop3;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
