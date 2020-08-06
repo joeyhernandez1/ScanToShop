@@ -8,6 +8,7 @@
 
 #import "AlertManager.h"
 #import "DatabaseManager.h"
+#import "SceneDelegate.h"
 
 @implementation AlertManager
 
@@ -16,12 +17,10 @@
     UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"Cancel"
                                                            style:UIAlertActionStyleCancel
                                                          handler:^(UIAlertAction * _Nonnull action) {
-        NSLog(@"Cancel action performed");
     }];
     UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"OK"
                                                        style:UIAlertActionStyleDefault
                                                      handler:^(UIAlertAction * _Nonnull action) {
-        NSLog(@"OK action performed.");
     }];
     
     switch (error) {
@@ -54,9 +53,7 @@
             break;
     }
     
-    [vc presentViewController:alert animated:YES completion:^{
-        NSLog(@"Finished presenting alert");
-    }];
+    [vc presentViewController:alert animated:YES completion:nil];
 }
 
 + (void)videoPermissionAlert:(UIViewController *)vc {
@@ -69,21 +66,12 @@
                                                                handler:^(UIAlertAction * _Nonnull action) {
         NSURL *settingsURL = [NSURL URLWithString:UIApplicationOpenSettingsURLString];
         if ([[UIApplication sharedApplication] canOpenURL:settingsURL]) {
-            [UIApplication.sharedApplication openURL:settingsURL options:[NSDictionary dictionary] completionHandler:^(BOOL success) {
-                if (success) {
-                    NSLog(@"Opened settings action performed successfully.");
-                }
-                else {
-                    NSLog(@"Could not open settings.");
-                }
-            }];
+            [UIApplication.sharedApplication openURL:settingsURL options:[NSDictionary dictionary] completionHandler:nil];
         }
     }];
     
     [alert addAction:openSettingsAction];
-    [vc presentViewController:alert animated:YES completion:^{
-        NSLog(@"Finished presenting alert");
-    }];
+    [vc presentViewController:alert animated:YES completion:nil];
 }
 
 + (void)dealNotFoundAlert:(UIViewController *)vc errorType:(dealErrorType)error {
@@ -91,8 +79,11 @@
     UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"OK"
                                                        style:UIAlertActionStyleDefault
                                                      handler:^(UIAlertAction * _Nonnull action) {
-        NSLog(@"OK action performed.");
-        [vc.navigationController popToRootViewControllerAnimated:YES];
+        
+        SceneDelegate *sceneDelegate = (SceneDelegate *) vc.view.window.windowScene.delegate;
+        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+        UITabBarController *tabBarController = [storyboard instantiateViewControllerWithIdentifier:@"AuthenticatedViewController"];
+        sceneDelegate.window.rootViewController = tabBarController;
     }];
     
     switch (error) {
@@ -119,7 +110,6 @@
     UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"OK"
                                                        style:UIAlertActionStyleDefault
                                                      handler:^(UIAlertAction * _Nonnull action) {
-        NSLog(@"OK action performed.");
         [vc.navigationController popToRootViewControllerAnimated:YES];
     }];
     alert = [UIAlertController alertControllerWithTitle:@"Error Opening Website"
@@ -135,9 +125,7 @@
                                                             preferredStyle:(UIAlertControllerStyleAlert)];
     UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"Cancel"
                                                             style:UIAlertActionStyleCancel
-                                                          handler:^(UIAlertAction * _Nonnull action) {
-         NSLog(@"Cancel action performed");
-     }];
+                                                          handler:nil];
     [alert addAction:cancelAction];
     [vc presentViewController:alert animated:YES completion:nil];
 }
@@ -148,14 +136,11 @@
                                                             preferredStyle:(UIAlertControllerStyleAlert)];
     UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"Cancel"
                                                             style:UIAlertActionStyleCancel
-                                                          handler:^(UIAlertAction * _Nonnull action) {
-         NSLog(@"Cancel action performed");
-     }];
+                                                          handler:nil];
     
     UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"Logout"
                                                        style:UIAlertActionStyleDefault
                                                      handler:^(UIAlertAction * _Nonnull action) {
-        NSLog(@"OK action performed.");
         [DatabaseManager logoutUser:vc];
     }];
     
@@ -170,14 +155,11 @@
                                                             preferredStyle:(UIAlertControllerStyleAlert)];
     UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"Cancel"
                                                             style:UIAlertActionStyleCancel
-                                                          handler:^(UIAlertAction * _Nonnull action) {
-         NSLog(@"Cancel action performed");
-     }];
+                                                          handler:nil];
     
     UIAlertAction *deleteAction = [UIAlertAction actionWithTitle:@"Delete"
                                                        style:UIAlertActionStyleDefault
                                                      handler:^(UIAlertAction * _Nonnull action) {
-        NSLog(@"delete action performed.");
         [DatabaseManager deleteUser:vc];
     }];
     

@@ -189,15 +189,6 @@
             self.view.frame = CGRectMake(self.view.frame.origin.x, 0 - (fieldButtom - (self.view.frame.size.height - keyboardSize.height - 2)), self.view.frame.size.width, self.view.frame.size.height);
         }
     }];
-    
-//    CGSize keyboardSize = [[info objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue].size;
-//    CGRect btFrame = [self.view convertRect:self.signInButton.frame fromView:self.buttonsView];
-      
-//    [UIView animateWithDuration:0.2 animations:^{
-//        if (self.view.frame.size.height - keyboardSize.height < buttonButtom) {
-//            self.view.frame = CGRectMake(self.view.frame.origin.x, 0 - (buttonButtom - (self.view.frame.size.height - keyboardSize.height)), self.view.frame.size.width, self.view.frame.size.height);
-//        }
-//    }];
 }
 
 - (CGFloat)getCurrentTextFieldBottomFrame {

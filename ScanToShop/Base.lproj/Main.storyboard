@@ -216,10 +216,10 @@
             </objects>
             <point key="canvasLocation" x="1346.376811594203" y="137.94642857142856"/>
         </scene>
-        <!--Tab Bar Controller-->
+        <!--Tab Bar View Controller-->
         <scene sceneID="qdl-gT-vRm">
             <objects>
-                <tabBarController storyboardIdentifier="AuthenticatedViewController" id="cjl-9B-85N" sceneMemberID="viewController">
+                <tabBarController storyboardIdentifier="AuthenticatedViewController" id="cjl-9B-85N" customClass="TabBarViewController" sceneMemberID="viewController">
                     <navigationItem key="navigationItem" id="E8N-mX-xt9"/>
                     <tabBar key="tabBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="Qmp-d3-dLU">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="49"/>
