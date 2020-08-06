@@ -73,8 +73,8 @@
 + (void)logoutUser:(UIViewController *)vc {
     SceneDelegate *sceneDelegate = (SceneDelegate *) vc.view.window.windowScene.delegate;
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
-    LoginViewController *loginViewController = [storyboard instantiateViewControllerWithIdentifier:@"LoginViewController"];
-    sceneDelegate.window.rootViewController = loginViewController;
+    UINavigationController *initialNavigationController = [storyboard instantiateViewControllerWithIdentifier:@"InitialNavigationController"];
+    sceneDelegate.window.rootViewController = initialNavigationController;
     
     [PFUser logOutInBackgroundWithBlock:^(NSError * _Nullable error) {
         if (error != nil) {
@@ -394,8 +394,10 @@
             for (PFObject *obj in objects) {
                 if ([obj.objectId isEqualToString:identifier]) {
                     completion(YES, nil);
+                    return;
                 }
             }
+            completion(NO, nil);
         }
         else {
             completion(NO, error);
