@@ -4,6 +4,7 @@
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16087"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="collection view cell content view" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -354,7 +355,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="teD-4M-IVD" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="547.82608695652175" y="2971.875"/>
+            <point key="canvasLocation" x="548" y="3216"/>
         </scene>
         <!--Deal Details-->
         <scene sceneID="ynJ-a6-BGU">
@@ -450,7 +451,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="BW1-KL-6YF" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1405.7971014492755" y="2971.2053571428569"/>
+            <point key="canvasLocation" x="1464" y="3216"/>
         </scene>
         <!--Profile-->
         <scene sceneID="TvW-ae-Yb4">
@@ -538,6 +539,11 @@
                         <viewLayoutGuide key="safeArea" id="jdd-ur-wxw"/>
                     </view>
                     <navigationItem key="navigationItem" title="Profile" id="inN-nc-k9F">
+                        <barButtonItem key="leftBarButtonItem" title="History" id="wYd-zX-Qpm">
+                            <connections>
+                                <segue destination="moZ-oG-P09" kind="show" identifier="recentsSegue" id="2Io-Zc-LuJ"/>
+                            </connections>
+                        </barButtonItem>
                         <barButtonItem key="rightBarButtonItem" title="Settings" image="gear" catalog="system" id="uWL-dK-eb9">
                             <connections>
                                 <segue destination="YgM-pP-zBA" kind="show" identifier="settingsSegue" id="IAT-al-qcd"/>
@@ -551,6 +557,74 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="GKG-pH-oaw" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1410.144927536232" y="2295.5357142857142"/>
+        </scene>
+        <!--Search History-->
+        <scene sceneID="Kyq-2Z-7if">
+            <objects>
+                <viewController id="moZ-oG-P09" customClass="ItemHistoryViewController" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="GAg-p7-nRA">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="Hbb-1C-dvK">
+                                <rect key="frame" x="0.0" y="88" width="414" height="808"/>
+                                <color key="backgroundColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="0.0" minimumInteritemSpacing="0.0" id="HHN-6L-nJA">
+                                    <size key="itemSize" width="188" height="223"/>
+                                    <size key="headerReferenceSize" width="0.0" height="0.0"/>
+                                    <size key="footerReferenceSize" width="0.0" height="0.0"/>
+                                    <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                </collectionViewFlowLayout>
+                                <cells>
+                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="ItemCollectionCell" id="wEm-y8-e8i" customClass="ItemCollectionCell">
+                                        <rect key="frame" x="0.0" y="0.0" width="188" height="223"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <collectionViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="u3G-w6-R4L">
+                                            <rect key="frame" x="0.0" y="0.0" width="188" height="223"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="TOE-Gy-HKP">
+                                                    <rect key="frame" x="0.0" y="0.0" width="188" height="223"/>
+                                                </imageView>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstAttribute="bottom" secondItem="TOE-Gy-HKP" secondAttribute="bottom" id="S45-Qk-ge7"/>
+                                                <constraint firstItem="TOE-Gy-HKP" firstAttribute="leading" secondItem="u3G-w6-R4L" secondAttribute="leading" id="UEG-gu-67W"/>
+                                                <constraint firstItem="TOE-Gy-HKP" firstAttribute="top" secondItem="u3G-w6-R4L" secondAttribute="top" id="mdM-qi-bDs"/>
+                                                <constraint firstAttribute="trailing" secondItem="TOE-Gy-HKP" secondAttribute="trailing" id="taG-YE-oEr"/>
+                                            </constraints>
+                                        </collectionViewCellContentView>
+                                        <size key="customSize" width="188" height="223"/>
+                                        <connections>
+                                            <outlet property="posterView" destination="TOE-Gy-HKP" id="9bn-SF-sJB"/>
+                                            <segue destination="GjE-ep-gr3" kind="show" identifier="historySegue" id="fDU-4U-ybE"/>
+                                        </connections>
+                                    </collectionViewCell>
+                                </cells>
+                                <connections>
+                                    <outlet property="dataSource" destination="moZ-oG-P09" id="d17-cH-Hnv"/>
+                                    <outlet property="delegate" destination="moZ-oG-P09" id="pzJ-rP-hLt"/>
+                                </connections>
+                            </collectionView>
+                        </subviews>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                        <constraints>
+                            <constraint firstItem="Hbb-1C-dvK" firstAttribute="trailing" secondItem="dlT-Wo-geN" secondAttribute="trailing" id="203-zV-M71"/>
+                            <constraint firstItem="Hbb-1C-dvK" firstAttribute="top" secondItem="GAg-p7-nRA" secondAttribute="top" constant="88" id="GSn-1p-pjI"/>
+                            <constraint firstAttribute="bottom" secondItem="Hbb-1C-dvK" secondAttribute="bottom" id="VcS-Fg-XSp"/>
+                            <constraint firstItem="Hbb-1C-dvK" firstAttribute="leading" secondItem="dlT-Wo-geN" secondAttribute="leading" id="jQM-HE-1DX"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="dlT-Wo-geN"/>
+                    </view>
+                    <navigationItem key="navigationItem" title="Search History" id="5VB-G4-nj8"/>
+                    <connections>
+                        <outlet property="collectionView" destination="Hbb-1C-dvK" id="mhL-2y-NyV"/>
+                        <outlet property="flowLayout" destination="HHN-6L-nJA" id="0qg-yd-4mT"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="NYQ-tn-sTf" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2540.579710144928" y="2491.0714285714284"/>
         </scene>
         <!--Settings-->
         <scene sceneID="0Kd-vY-ElF">
@@ -575,13 +649,13 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="About:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="G9L-5K-xA7">
-                                <rect key="frame" x="8" y="215" width="64" height="27"/>
+                                <rect key="frame" x="16" y="215" width="64" height="27"/>
                                 <fontDescription key="fontDescription" style="UICTFontTextStyleTitle2"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="YQ1-Na-Eox">
-                                <rect key="frame" x="8" y="250" width="398" height="130.5"/>
+                                <rect key="frame" x="16" y="250" width="382" height="130.5"/>
                                 <string key="text">ScanToShop is a mobile application created to help you get the best deals possible by scanning the item's barcode and looking for online deals for the respective item. Here, you are able to look for deals and save them to your personal profile if you wanted to.</string>
                                 <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                 <nil key="textColor"/>
@@ -600,20 +674,20 @@
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <constraints>
-                            <constraint firstItem="G9L-5K-xA7" firstAttribute="leading" secondItem="B2K-MA-Fri" secondAttribute="leading" constant="8" id="5ja-l9-Z7n"/>
                             <constraint firstItem="YQ1-Na-Eox" firstAttribute="top" secondItem="G9L-5K-xA7" secondAttribute="bottom" constant="8" id="8qC-Qz-6eS"/>
                             <constraint firstItem="Os0-XV-ie1" firstAttribute="leading" secondItem="B2K-MA-Fri" secondAttribute="leading" constant="100" id="ENN-qF-cnc"/>
                             <constraint firstItem="sJI-lP-1BJ" firstAttribute="leading" secondItem="B2K-MA-Fri" secondAttribute="leading" constant="8" id="G1k-VH-O9z"/>
                             <constraint firstItem="sJI-lP-1BJ" firstAttribute="top" secondItem="B2K-MA-Fri" secondAttribute="top" constant="60" id="HQg-DS-Y1B"/>
                             <constraint firstItem="B2K-MA-Fri" firstAttribute="trailing" secondItem="sJI-lP-1BJ" secondAttribute="trailing" constant="8" id="JLk-hW-L5V"/>
                             <constraint firstItem="B2K-MA-Fri" firstAttribute="trailing" relation="lessThanOrEqual" secondItem="G9L-5K-xA7" secondAttribute="trailing" constant="342" id="M9u-Px-vxd"/>
-                            <constraint firstItem="B2K-MA-Fri" firstAttribute="trailing" secondItem="YQ1-Na-Eox" secondAttribute="trailing" constant="8" id="OoR-T6-Rt7"/>
+                            <constraint firstItem="YQ1-Na-Eox" firstAttribute="leading" secondItem="G9L-5K-xA7" secondAttribute="leading" id="NZw-4w-E9H"/>
+                            <constraint firstItem="B2K-MA-Fri" firstAttribute="trailing" secondItem="YQ1-Na-Eox" secondAttribute="trailing" constant="16" id="OoR-T6-Rt7"/>
                             <constraint firstItem="B2K-MA-Fri" firstAttribute="bottom" secondItem="iv5-ni-fjd" secondAttribute="bottom" constant="100" id="PNR-C7-MIQ"/>
                             <constraint firstItem="B2K-MA-Fri" firstAttribute="trailing" secondItem="iv5-ni-fjd" secondAttribute="trailing" constant="100" id="Pl9-Mt-9AA"/>
                             <constraint firstItem="B2K-MA-Fri" firstAttribute="bottom" secondItem="Os0-XV-ie1" secondAttribute="bottom" constant="100" id="RwR-ah-Ogk"/>
                             <constraint firstItem="G9L-5K-xA7" firstAttribute="top" secondItem="sJI-lP-1BJ" secondAttribute="bottom" constant="26" id="mXq-Q1-BI3"/>
                             <constraint firstItem="iv5-ni-fjd" firstAttribute="leading" relation="lessThanOrEqual" secondItem="Os0-XV-ie1" secondAttribute="trailing" constant="56" id="mjK-6v-Gad"/>
-                            <constraint firstItem="YQ1-Na-Eox" firstAttribute="leading" secondItem="B2K-MA-Fri" secondAttribute="leading" constant="8" id="sGr-UD-gMR"/>
+                            <constraint firstItem="YQ1-Na-Eox" firstAttribute="leading" secondItem="B2K-MA-Fri" secondAttribute="leading" constant="16" id="sGr-UD-gMR"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="B2K-MA-Fri"/>
                     </view>
@@ -621,7 +695,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Kw2-Ov-bpJ" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2182.608695652174" y="2295.5357142857142"/>
+            <point key="canvasLocation" x="2541" y="1844"/>
         </scene>
         <!--Scan Item-->
         <scene sceneID="aqa-9o-iki">
@@ -682,6 +756,7 @@
     </scenes>
     <inferredMetricsTieBreakers>
         <segue reference="dcF-mX-BtI"/>
+        <segue reference="fDU-4U-ybE"/>
         <segue reference="p4M-ek-oqN"/>
     </inferredMetricsTieBreakers>
     <resources>
