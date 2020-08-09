@@ -108,6 +108,61 @@
     }];
 }
 
++ (void)fetchRecentItems:(void(^)(NSArray *items,NSError *error))completion {
+    PFUser *user = [PFUser currentUser];
+    PFRelation *relation = [user relationForKey:@"recentItems"];
+    PFQuery *query = [relation query];
+    [query findObjectsInBackgroundWithBlock:^(NSArray * _Nullable objects, NSError * _Nullable error) {
+        if (objects.count > 0) {
+            [DatabaseManager createItemsFromFetchWithBlock:objects withCompletion:^(NSArray *appItems) {
+                if (appItems.count > 0) {
+                    completion(appItems, nil);
+                }
+                else {
+                    completion(appItems, error);
+                }
+            }];
+        }
+        else {
+            completion(nil, error);
+        }
+    }];
+}
+
++ (void)createItemsFromFetchWithBlock:(NSArray *)serverItems withCompletion:(void(^)(NSArray *appItems))completion {
+    NSMutableArray *result = [NSMutableArray array];
+    dispatch_group_t group = dispatch_group_create();
+    for (PFObject *obj in serverItems) {
+        Item *serverItem = [DatabaseManager createServerItemFromPFObject:obj];
+        if (serverItem != nil) {
+            dispatch_group_enter(group);
+            [DatabaseManager createItemWithBlock:serverItem withCompletion:^(AppItem *appItem, NSError *error) {
+                [result addObject:appItem];
+                dispatch_group_leave(group);
+            }];
+        }
+    }
+    dispatch_group_notify(group, dispatch_get_main_queue(), ^{
+        completion(result);
+    });
+}
+
++ (void)updateRecentItems:(PFObject *)item withCompletion:(void(^)(NSError *error))completion {
+    PFUser *user = [PFUser currentUser];
+    PFRelation *relation = [user relationForKey:@"recentItems"];
+    if (item != nil) {
+        [relation addObject:item];
+        [user saveInBackgroundWithBlock:^(BOOL succeeded, NSError * _Nullable error) {
+            if (succeeded) {
+                completion(nil);
+            }
+            else {
+                completion(error);
+            }
+        }];
+    }
+}
+
 + (void)fetchItem:(NSString *)barcode viewController:(UIViewController *)vc withCompletion:(void(^)(NSArray *deals,NSError *error))completion {
     PFQuery *itemQuery = [Item query];
     [itemQuery whereKey:@"barcode" equalTo:barcode];
@@ -120,6 +175,11 @@
                     }];
                 }
                 else {
+                    [AlertManager dealNotFoundAlert:vc errorType:NoDealFoundError];
+                }
+            }];
+            [DatabaseManager updateRecentItems:object withCompletion:^(NSError * _Nonnull error) {
+                if (error) {
                     [AlertManager dealNotFoundAlert:vc errorType:NoDealFoundError];
                 }
             }];
@@ -290,21 +350,17 @@
     
     if (object[@"name"] != nil && [object[@"name"] isKindOfClass:[NSString class]]) {
         serverItem.name = object[@"name"];
-        NSLog(@"%@",serverItem.name);
     }
     if (object[@"info"] != nil && [object[@"info"] isKindOfClass:[NSString class]]) {
         serverItem.information = object[@"info"];
-        NSLog(@"%@",serverItem.information);
     }
     if (object[@"barcode"] != nil && [object[@"barcode"] isKindOfClass:[NSString class]]) {
         serverItem.barcode = object[@"barcode"];
-        NSLog(@"%@",serverItem.barcode);
     }
     if (object[@"image"] != nil) {
         serverItem.image = object[@"image"];
     }
     serverItem.objectId = object.objectId;
-
     return serverItem;
 }
 

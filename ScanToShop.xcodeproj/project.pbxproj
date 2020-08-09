@@ -36,6 +36,8 @@
 		4E1C21D524D4F97500669C4D /* UserCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 4E1C21D424D4F97500669C4D /* UserCell.m */; };
 		4E5A393F24D9DB9100C79A41 /* HUDManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 4E5A393E24D9DB9100C79A41 /* HUDManager.m */; };
 		4EDED08C24DCB54B0025EC6B /* TabBarViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4EDED08B24DCB54B0025EC6B /* TabBarViewController.m */; };
+		4EDED08F24DDC19B0025EC6B /* ItemHistoryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4EDED08E24DDC19B0025EC6B /* ItemHistoryViewController.m */; };
+		4EDED09224DDC3A20025EC6B /* ItemCollectionCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 4EDED09124DDC3A20025EC6B /* ItemCollectionCell.m */; };
 		719949778BE9982828964AF9 /* Pods_ScanToShop.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 830A4F3DB41A99D64DFC5358 /* Pods_ScanToShop.framework */; };
 /* End PBXBuildFile section */
 
@@ -113,6 +115,10 @@
 		4E5A393E24D9DB9100C79A41 /* HUDManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = HUDManager.m; sourceTree = "<group>"; };
 		4EDED08A24DCB54B0025EC6B /* TabBarViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TabBarViewController.h; sourceTree = "<group>"; };
 		4EDED08B24DCB54B0025EC6B /* TabBarViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TabBarViewController.m; sourceTree = "<group>"; };
+		4EDED08D24DDC19B0025EC6B /* ItemHistoryViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ItemHistoryViewController.h; sourceTree = "<group>"; };
+		4EDED08E24DDC19B0025EC6B /* ItemHistoryViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ItemHistoryViewController.m; sourceTree = "<group>"; };
+		4EDED09024DDC3A20025EC6B /* ItemCollectionCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ItemCollectionCell.h; sourceTree = "<group>"; };
+		4EDED09124DDC3A20025EC6B /* ItemCollectionCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ItemCollectionCell.m; sourceTree = "<group>"; };
 		830A4F3DB41A99D64DFC5358 /* Pods_ScanToShop.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ScanToShop.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		86C7071910E479A4B0EFAC26 /* Pods-ScanToShop.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ScanToShop.release.xcconfig"; path = "Target Support Files/Pods-ScanToShop/Pods-ScanToShop.release.xcconfig"; sourceTree = "<group>"; };
 		AC0EF716635A82915210568F /* Pods_ScanToShop_ScanToShopUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ScanToShop_ScanToShopUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -228,6 +234,8 @@
 				4E19229124BD1C2D00B08EE6 /* DealsViewController.m */,
 				4E19229324BD1C5C00B08EE6 /* DetailsViewController.h */,
 				4E19229424BD1C5C00B08EE6 /* DetailsViewController.m */,
+				4EDED08D24DDC19B0025EC6B /* ItemHistoryViewController.h */,
+				4EDED08E24DDC19B0025EC6B /* ItemHistoryViewController.m */,
 			);
 			path = ViewControllers;
 			sourceTree = "<group>";
@@ -240,6 +248,8 @@
 				4E1C21D124D4BBE800669C4D /* UserCell.xib */,
 				4E1C21D324D4F97500669C4D /* UserCell.h */,
 				4E1C21D424D4F97500669C4D /* UserCell.m */,
+				4EDED09024DDC3A20025EC6B /* ItemCollectionCell.h */,
+				4EDED09124DDC3A20025EC6B /* ItemCollectionCell.m */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -550,6 +560,8 @@
 				4E5A393F24D9DB9100C79A41 /* HUDManager.m in Sources */,
 				4E1C21B524C25DCA00669C4D /* AlertManager.m in Sources */,
 				4E1C21C724D12CEE00669C4D /* AppItem.m in Sources */,
+				4EDED09224DDC3A20025EC6B /* ItemCollectionCell.m in Sources */,
+				4EDED08F24DDC19B0025EC6B /* ItemHistoryViewController.m in Sources */,
 				4E19229D24BF697500B08EE6 /* Deal.m in Sources */,
 				4E19225024BD0A1700B08EE6 /* SceneDelegate.m in Sources */,
 				4EDED08C24DCB54B0025EC6B /* TabBarViewController.m in Sources */,

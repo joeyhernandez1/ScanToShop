@@ -189,6 +189,8 @@
     }
 }
 
+#pragma mark - Navigation
+
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
     if ([segue.identifier isEqualToString:@"dealsSegue"]) {
         DealsViewController *dealsController = [segue destinationViewController];
