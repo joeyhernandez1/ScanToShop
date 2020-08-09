@@ -423,7 +423,7 @@
     }];
 }
 
-+ (void)removeDeal:(AppDeal *)appDeal withCompletion:(void(^)(NSError *error))completion {
++ (void)unsaveDeal:(AppDeal *)appDeal withCompletion:(void(^)(NSError *error))completion {
     PFUser *user = [PFUser currentUser];
     PFRelation *relation = [user relationForKey:@"dealsSaved"];
     [DatabaseManager getPFObjectFromAppDeal:appDeal withCompletion:^(PFObject *object) {

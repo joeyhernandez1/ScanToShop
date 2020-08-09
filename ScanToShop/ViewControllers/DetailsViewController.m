@@ -101,7 +101,7 @@
         }];
     }
     else {
-        [DatabaseManager removeDeal:self.deal withCompletion:^(NSError * _Nonnull error) {
+        [DatabaseManager unsaveDeal:self.deal withCompletion:^(NSError * _Nonnull error) {
             if (error) {
                 NSLog(@"%@", error.localizedDescription);
                 [AlertManager dealNotSavedAlert:self];
