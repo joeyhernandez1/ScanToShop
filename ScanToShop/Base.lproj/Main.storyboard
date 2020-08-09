@@ -365,12 +365,16 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="slowmo" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="aM1-kr-gkw">
+                            <imageView clipsSubviews="YES" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="slowmo" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="aM1-kr-gkw">
                                 <rect key="frame" x="72" y="137" width="270" height="271"/>
+                                <gestureRecognizers/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="270" id="AnV-Rs-dcd"/>
                                     <constraint firstAttribute="width" constant="270" id="jrD-0I-f4S"/>
                                 </constraints>
+                                <connections>
+                                    <outletCollection property="gestureRecognizers" destination="IN8-up-Xqp" appends="YES" id="aWq-nG-l8G"/>
+                                </connections>
                             </imageView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Item Name" textAlignment="center" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" translatesAutoresizingMaskIntoConstraints="NO" id="2ba-BY-K05">
                                 <rect key="frame" x="8" y="96" width="398" height="33.5"/>
@@ -450,6 +454,11 @@
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="BW1-KL-6YF" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+                <tapGestureRecognizer id="IN8-up-Xqp">
+                    <connections>
+                        <action selector="onImageTap:" destination="QTO-Ix-ftP" id="Lib-3E-aj5"/>
+                    </connections>
+                </tapGestureRecognizer>
             </objects>
             <point key="canvasLocation" x="1464" y="3216"/>
         </scene>
