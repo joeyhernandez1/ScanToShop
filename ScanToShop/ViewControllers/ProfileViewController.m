@@ -9,6 +9,7 @@
 #import "ProfileViewController.h"
 #import "DetailsViewController.h"
 #import "DatabaseManager.h"
+#import "AlertManager.h"
 #import "DealCell.h"
 #import "UserCell.h"
 #import "User.h"
@@ -91,6 +92,23 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     return _user.dealsSaved.count + 1;
+}
+
+- (UISwipeActionsConfiguration *)tableView:(UITableView *)tableView trailingSwipeActionsConfigurationForRowAtIndexPath:(NSIndexPath *)indexPath {
+    AppDeal *deal = _user.dealsSaved[indexPath.row-1];
+    UIContextualAction *unsaveAction = [UIContextualAction contextualActionWithStyle:UIContextualActionStyleDestructive title:@"Unsave" handler:^(UIContextualAction * _Nonnull action, __kindof UIView * _Nonnull sourceView, void (^ _Nonnull completionHandler)(BOOL)) {
+        [DatabaseManager unsaveDeal:deal withCompletion:^(NSError * _Nonnull error) {
+            if (error) {
+                NSLog(@"%@", error.localizedDescription);
+                [AlertManager dealNotSavedAlert:self];
+            }
+        }];
+        [self.user.dealsSaved removeObjectAtIndex:indexPath.row-1];
+        [self.tableView reloadData];
+    }];
+    UISwipeActionsConfiguration *actionConfigurations = [UISwipeActionsConfiguration configurationWithActions:@[unsaveAction]];
+    return actionConfigurations;
+    
 }
 
 #pragma mark - UserCell Delegate

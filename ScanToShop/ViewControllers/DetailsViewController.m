@@ -60,6 +60,25 @@
     }];
 }
 
+- (IBAction)onImageTap:(id)sender {
+    UIImageView *fullScreenImageView = [[UIImageView alloc] initWithImage:self.itemImageView.image];
+    fullScreenImageView.frame = [[UIScreen mainScreen] bounds];
+    fullScreenImageView.backgroundColor = [UIColor blackColor];
+    fullScreenImageView.contentMode = UIViewContentModeScaleAspectFit;
+    fullScreenImageView.userInteractionEnabled = YES;
+    
+    UISwipeGestureRecognizer *swipeRecognizer = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(dismissFullScreenImage:)];
+    swipeRecognizer.direction = UISwipeGestureRecognizerDirectionDown;
+    [fullScreenImageView addGestureRecognizer:swipeRecognizer];
+    fullScreenImageView.alpha = 0;
+    [UIView animateWithDuration:0.625 animations:^{
+        [self.view addSubview:fullScreenImageView];
+        [self.navigationController setNavigationBarHidden:YES];
+        [self.tabBarController.tabBar setHidden:YES];
+        fullScreenImageView.alpha = 1;
+    }];
+}
+
 - (void)setSaveButtonOnDealStatus {
     if (self.isDealSavedByUser) {
         [self.saveButton setTitle:@"UNSAVE" forState:UIControlStateNormal];
@@ -101,7 +120,7 @@
         }];
     }
     else {
-        [DatabaseManager removeDeal:self.deal withCompletion:^(NSError * _Nonnull error) {
+        [DatabaseManager unsaveDeal:self.deal withCompletion:^(NSError * _Nonnull error) {
             if (error) {
                 NSLog(@"%@", error.localizedDescription);
                 [AlertManager dealNotSavedAlert:self];
@@ -112,6 +131,16 @@
             }
         }];
     }
-
 }
+
+- (void)dismissFullScreenImage:(UISwipeGestureRecognizer *)sender {
+    self.view.alpha = 0;
+    [UIView animateWithDuration:0.65 animations:^{
+        [self.navigationController setNavigationBarHidden:NO];
+        [self.tabBarController.tabBar setHidden:NO];
+        [sender.view removeFromSuperview];
+        self.view.alpha = 1;
+    }];
+}
+
 @end
