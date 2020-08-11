@@ -207,6 +207,23 @@
     }];
 }
 
++ (void)fetchAllDeals:(void(^)(NSArray *deals ,NSError *error))completion {
+    PFQuery *dealsQuery = [Deal query];
+    [dealsQuery includeKey:@"item"];
+    [dealsQuery orderByAscending:@"price"];
+    
+    [dealsQuery findObjectsInBackgroundWithBlock:^(NSArray * _Nullable objects, NSError * _Nullable error) {
+        if (objects.count > 0) {
+            [DatabaseManager createDealsFromFetchWithBlock:objects withCompletion:^(NSArray *appDeals) {
+                completion(appDeals, nil);
+            }];
+        }
+        else {
+            completion(nil, error);
+        }
+    }];
+}
+
 + (void)fetchSavedDeals:(void(^)(NSArray *deals, NSError *error))completion {
     PFUser *user = [PFUser currentUser];
     PFRelation *relation = [user relationForKey:@"dealsSaved"];

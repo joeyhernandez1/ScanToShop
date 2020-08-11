@@ -383,13 +383,13 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Description" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="82p-5o-cdJ">
-                                <rect key="frame" x="8" y="444" width="398" height="20.5"/>
+                                <rect key="frame" x="16" y="447.5" width="382" height="20.5"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="VDL-5N-hW4">
-                                <rect key="frame" x="100" y="484.5" width="55" height="318"/>
+                                <rect key="frame" x="100" y="488" width="55" height="314.5"/>
                                 <fontDescription key="fontDescription" style="UICTFontTextStyleTitle1"/>
                                 <state key="normal" title="BUY"/>
                                 <connections>
@@ -397,7 +397,7 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dzW-tk-r48">
-                                <rect key="frame" x="246" y="484.5" width="68" height="318"/>
+                                <rect key="frame" x="246" y="488" width="68" height="314.5"/>
                                 <fontDescription key="fontDescription" style="UICTFontTextStyleTitle1"/>
                                 <state key="normal" title="SAVE"/>
                                 <connections>
@@ -405,13 +405,13 @@
                                 </connections>
                             </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Seller Platform" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Akr-S4-ZAm">
-                                <rect key="frame" x="8" y="415.5" width="112.5" height="20.5"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <rect key="frame" x="16" y="415.5" width="126.5" height="24"/>
+                                <fontDescription key="fontDescription" style="UICTFontTextStyleTitle3"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Price" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7N9-c3-Eo8">
-                                <rect key="frame" x="367" y="415.5" width="39" height="20.5"/>
+                                <rect key="frame" x="359" y="415.5" width="39" height="20.5"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
@@ -419,14 +419,12 @@
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <constraints>
-                            <constraint firstItem="zYM-GC-8oU" firstAttribute="trailing" secondItem="7N9-c3-Eo8" secondAttribute="trailing" constant="8" id="19r-zV-lDu"/>
                             <constraint firstItem="aM1-kr-gkw" firstAttribute="centerX" secondItem="zYM-GC-8oU" secondAttribute="centerX" id="1Ap-aw-xAP"/>
                             <constraint firstItem="VDL-5N-hW4" firstAttribute="top" secondItem="82p-5o-cdJ" secondAttribute="bottom" constant="20" id="1bf-yw-hXX"/>
                             <constraint firstItem="zYM-GC-8oU" firstAttribute="trailing" secondItem="2ba-BY-K05" secondAttribute="trailing" constant="8" id="1ky-SJ-tbV"/>
                             <constraint firstItem="aM1-kr-gkw" firstAttribute="top" secondItem="2ba-BY-K05" secondAttribute="bottom" constant="8" id="99e-bE-tAr"/>
                             <constraint firstItem="7N9-c3-Eo8" firstAttribute="leading" relation="lessThanOrEqual" secondItem="Akr-S4-ZAm" secondAttribute="trailing" constant="246.5" id="Ab5-7e-oPB"/>
                             <constraint firstItem="zYM-GC-8oU" firstAttribute="bottom" secondItem="VDL-5N-hW4" secondAttribute="bottom" constant="10.5" id="DI5-LO-eCt"/>
-                            <constraint firstItem="zYM-GC-8oU" firstAttribute="trailing" secondItem="82p-5o-cdJ" secondAttribute="trailing" constant="8" id="EKP-Vc-l0N"/>
                             <constraint firstItem="2ba-BY-K05" firstAttribute="leading" secondItem="zYM-GC-8oU" secondAttribute="leading" constant="8" id="EMj-rn-Dsp"/>
                             <constraint firstItem="2ba-BY-K05" firstAttribute="top" secondItem="zYM-GC-8oU" secondAttribute="top" constant="8" id="MOL-a3-cL5"/>
                             <constraint firstItem="VDL-5N-hW4" firstAttribute="leading" secondItem="zYM-GC-8oU" secondAttribute="leading" constant="100" id="Nli-Fk-4pf"/>
@@ -436,9 +434,11 @@
                             <constraint firstItem="Akr-S4-ZAm" firstAttribute="top" secondItem="aM1-kr-gkw" secondAttribute="bottom" constant="8" id="Yk7-Im-BCM"/>
                             <constraint firstItem="7N9-c3-Eo8" firstAttribute="top" secondItem="Akr-S4-ZAm" secondAttribute="top" id="Zug-fk-AVm"/>
                             <constraint firstItem="82p-5o-cdJ" firstAttribute="top" secondItem="Akr-S4-ZAm" secondAttribute="bottom" constant="8" id="atA-uW-D5b"/>
+                            <constraint firstItem="zYM-GC-8oU" firstAttribute="trailing" secondItem="7N9-c3-Eo8" secondAttribute="trailing" constant="16" id="fKS-tk-g7A"/>
                             <constraint firstItem="zYM-GC-8oU" firstAttribute="bottom" relation="lessThanOrEqual" secondItem="82p-5o-cdJ" secondAttribute="bottom" constant="348.5" id="lOx-3l-C9B"/>
-                            <constraint firstItem="82p-5o-cdJ" firstAttribute="leading" secondItem="zYM-GC-8oU" secondAttribute="leading" constant="8" id="lVK-2r-a3D"/>
-                            <constraint firstItem="Akr-S4-ZAm" firstAttribute="leading" secondItem="zYM-GC-8oU" secondAttribute="leading" constant="8" id="lgq-mg-KzF"/>
+                            <constraint firstItem="82p-5o-cdJ" firstAttribute="leading" secondItem="zYM-GC-8oU" secondAttribute="leading" constant="16" id="lVK-2r-a3D"/>
+                            <constraint firstItem="Akr-S4-ZAm" firstAttribute="leading" secondItem="zYM-GC-8oU" secondAttribute="leading" constant="16" id="lgq-mg-KzF"/>
+                            <constraint firstItem="7N9-c3-Eo8" firstAttribute="trailing" secondItem="82p-5o-cdJ" secondAttribute="trailing" id="rTN-P8-5oz"/>
                             <constraint firstItem="dzW-tk-r48" firstAttribute="bottom" secondItem="VDL-5N-hW4" secondAttribute="bottom" id="stN-yK-Njf"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="zYM-GC-8oU"/>
@@ -460,7 +460,7 @@
                     </connections>
                 </tapGestureRecognizer>
             </objects>
-            <point key="canvasLocation" x="1464" y="3216"/>
+            <point key="canvasLocation" x="1412" y="3216"/>
         </scene>
         <!--Profile-->
         <scene sceneID="TvW-ae-Yb4">
@@ -570,7 +570,7 @@
         <!--Search History-->
         <scene sceneID="Kyq-2Z-7if">
             <objects>
-                <viewController id="moZ-oG-P09" customClass="ItemHistoryViewController" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="ItemHistoryViewController" id="moZ-oG-P09" customClass="ItemHistoryViewController" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="GAg-p7-nRA">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -709,7 +709,7 @@
         <!--Scan Item-->
         <scene sceneID="aqa-9o-iki">
             <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" modalPresentationStyle="fullScreen" id="iwz-ms-fwF" sceneMemberID="viewController">
+                <navigationController storyboardIdentifier="BarcodeNavigationController" automaticallyAdjustsScrollViewInsets="NO" modalPresentationStyle="fullScreen" id="iwz-ms-fwF" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="Scan Item" image="barcode.viewfinder" catalog="system" id="dGU-ts-bA8"/>
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="yiN-63-H3g">
@@ -728,7 +728,7 @@
         <!--Profile-->
         <scene sceneID="Aef-Mi-hRF">
             <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="gVz-8Z-cgJ" sceneMemberID="viewController">
+                <navigationController storyboardIdentifier="ProfileNavigationController" automaticallyAdjustsScrollViewInsets="NO" id="gVz-8Z-cgJ" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="Profile" image="person.crop.square.fill" catalog="system" id="6yi-Fc-jjC"/>
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="Y6W-4f-DDH">

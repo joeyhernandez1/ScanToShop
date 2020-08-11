@@ -11,8 +11,10 @@
 #import "DatabaseManager.h"
 #import <JGProgressHUD/JGProgressHUD.h>
 #import "HUDManager.h"
+#import "AlertManager.h"
 #import "ItemCollectionCell.h"
 #import "AppItem.h"
+#import "AppDeal.h"
 
 @interface ItemHistoryViewController () <UICollectionViewDelegate,
                                          UICollectionViewDataSource,
@@ -23,6 +25,7 @@
 @property (weak, nonatomic) IBOutlet UICollectionViewFlowLayout *flowLayout;
 @property (weak, nonatomic) IBOutlet UIView *searchBarPlaceHolder;
 @property (strong, nonatomic) UISearchController *searchController;
+@property (strong, nonatomic) NSArray *deals;
 @property (strong, nonatomic) NSMutableArray *items;
 @property (strong, nonatomic) NSArray *filteredItems;
 
@@ -48,15 +51,19 @@
         [HUDManager setViewLoadingState:NO viewController:self];
     }];
     
+    [DatabaseManager fetchAllDeals:^(NSArray * _Nonnull deals, NSError * _Nonnull error) {
+        if (deals.count > 0) {
+            self.deals = deals;
+        }
+    }];
+    
     self.searchController = [[UISearchController alloc] initWithSearchResultsController:nil];
     self.searchController.searchResultsUpdater = self;
     self.searchController.obscuresBackgroundDuringPresentation = NO;
     [self.searchController.searchBar sizeToFit];
     self.navigationItem.titleView = self.searchController.searchBar;
     self.searchController.hidesNavigationBarDuringPresentation = NO;
-    //self.collectionView.contentInsetAdjustmentBehavior = UIScrollViewContentInsetAdjustmentScrollab;
     self.definesPresentationContext = YES;
-
 }
 
 - (void)viewDidLayoutSubviews {
@@ -67,6 +74,18 @@
     self.flowLayout.sectionInset = UIEdgeInsetsMake(0, 0, 0, 0);
 }
 
+- (BOOL) itemHasDeals:(AppItem *)item {
+    if (self.deals.count == 0) {
+        return NO;
+    }
+    
+    for (AppDeal *deal in self.deals) {
+        if ([deal.item.identifier isEqualToString:item.identifier]) {
+            return YES;
+        }
+    }
+    return NO;
+}
 
 #pragma mark - CollectionView Delegate
 
@@ -91,12 +110,16 @@
 #pragma mark - Navigation
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    if ([segue.identifier isEqualToString:@"historySegue"]) {
+    UICollectionViewCell *tappedCell = sender;
+    NSIndexPath *indexPath = [self.collectionView indexPathForCell:tappedCell];
+    AppItem *currentItem = self.filteredItems[indexPath.row];
+    
+    if ([segue.identifier isEqualToString:@"historySegue"] && [self itemHasDeals:currentItem]) {
         DealsViewController *dealsController = [segue destinationViewController];
-        UICollectionViewCell *tappedCell = sender;
-        NSIndexPath *indexPath = [self.collectionView indexPathForCell:tappedCell];
-        AppItem *currentItem = self.items[indexPath.row];
         dealsController.barcode = currentItem.barcode;
+    }
+    else {
+        [AlertManager noDealAvailableAlert:self];
     }
 }
 
