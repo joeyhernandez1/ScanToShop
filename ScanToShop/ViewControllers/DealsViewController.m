@@ -50,14 +50,14 @@
                     self.savedDeals = (NSMutableArray *) deals;
                 }
                 [self.tableView reloadData];
+                [progressHUD dismissAfterDelay:0.1 animated:YES];
+                [HUDManager setViewLoadingState:NO viewController:self];
             }];
         }
         else {
             //alert
             NSLog(@"error %@", error.localizedDescription);
         }
-        [progressHUD dismissAfterDelay:0.1 animated:YES];
-        [HUDManager setViewLoadingState:NO viewController:self];
     }];
 }
 

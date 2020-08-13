@@ -24,6 +24,7 @@ NS_ASSUME_NONNULL_BEGIN
 + (void)isCurrentDealSaved:(NSString *)identifier withCompletion:(void(^)(_Bool hasDeal, NSError *error))completion;
 + (void)unsaveDeal:(AppDeal *)appDeal withCompletion:(void(^)(NSError *error))completion;
 + (void)fetchSavedDeals:(void(^)(NSArray *deals, NSError *error))completion;
++ (void)fetchAllDeals:(void(^)(NSArray *deals ,NSError *error))completion;
 + (void)getCurrentUser:(void(^)(User *user))completion;
 + (void)logoutUser:(UIViewController *)vc;
 + (void)updateUser:(User *)user;

@@ -39,25 +39,36 @@
 }
 
 - (IBAction)onRegisterTap:(id)sender {
-    JGProgressHUD *progressHUD = [JGProgressHUD progressHUDWithStyle:JGProgressHUDStyleDark];
-    progressHUD.textLabel.text = @"Registering user...";
-    [progressHUD showInView:self.view];
-    [HUDManager setViewLoadingState:YES viewController:self];
     [self registerUser];
-    [progressHUD dismissAnimated:YES];
-    [HUDManager setViewLoadingState:NO viewController:self];
 }
 
 - (IBAction)onImageTap:(id)sender {
-    [self pickImage];
+    [self cameraSourceAlert];
+}
+
+- (void)cameraSourceAlert {
+    UIAlertController *alert;
+    UIAlertAction *cameraAction = [UIAlertAction actionWithTitle:@"Camera"
+                                                       style:UIAlertActionStyleDefault
+                                                     handler:^(UIAlertAction * _Nonnull action) {
+        [self pickImage:UIImagePickerControllerSourceTypeCamera];
+    }];
+    UIAlertAction *libraryAction = [UIAlertAction actionWithTitle:@"Library"
+                                                       style:UIAlertActionStyleDefault
+                                                     handler:^(UIAlertAction * _Nonnull action) {
+        [self pickImage:UIImagePickerControllerSourceTypePhotoLibrary];
+    }];
+    alert = [UIAlertController alertControllerWithTitle:@"Source"
+                                                message:@"Choose Library to select from your photo library or camera to take a picture."
+                                         preferredStyle:(UIAlertControllerStyleAlert)];
+    [alert addAction:cameraAction];
+    [alert addAction:libraryAction];
+    [self presentViewController:alert animated:YES completion:nil];
 }
 
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary<NSString *,id> *)info {
-    
-    UIImage *originalImage = info[UIImagePickerControllerOriginalImage];
     UIImage *editedImage = info[UIImagePickerControllerEditedImage];
-    [self updateProfileImage: originalImage ?: editedImage];
-
+    [self updateProfileImage:editedImage];
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
@@ -68,18 +79,11 @@
     self.profileImage.layer.cornerRadius = self.profileImage.layer.bounds.size.width / 2;
 }
 
-- (void) pickImage {
+- (void) pickImage:(UIImagePickerControllerSourceType)source {
     UIImagePickerController *imagePickerVC = [UIImagePickerController new];
     imagePickerVC.delegate = self;
     imagePickerVC.allowsEditing = YES;
-    
-    if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
-        imagePickerVC.sourceType = UIImagePickerControllerSourceTypeCamera;
-    }
-    else {
-        NSLog(@"Camera 🚫 available so we will use photo library instead");
-        imagePickerVC.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
-    }
+    imagePickerVC.sourceType = source;
 
     [self presentViewController:imagePickerVC animated:YES completion:nil];
 }
@@ -115,6 +119,10 @@
         return;
     }
     
+    JGProgressHUD *progressHUD = [JGProgressHUD progressHUDWithStyle:JGProgressHUDStyleDark];
+    progressHUD.textLabel.text = @"Registering user...";
+    [progressHUD showInView:self.view];
+    [HUDManager setViewLoadingState:YES viewController:self];
     User *user = [[User alloc] init];
     user.username = self.usernameField.text;
     user.password = self.passwordField.text;
@@ -125,11 +133,15 @@
     
     [DatabaseManager saveUser:user withCompletion:^(NSError *error) {
         if (error) {
+            [progressHUD dismissAnimated:YES];
+            [HUDManager setViewLoadingState:NO viewController:self];
             [AlertManager loginAlert:ServerError errorString:error.localizedDescription viewController:self];
         }
         else {
             [self performSegueWithIdentifier:@"registerSegue" sender:nil];
             [self setFieldsToDefault];
+            [progressHUD dismissAnimated:YES];
+            [HUDManager setViewLoadingState:NO viewController:self];
         }
     }];
 }

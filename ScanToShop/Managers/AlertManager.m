@@ -168,4 +168,18 @@
     [vc presentViewController:alert animated:YES completion:nil];
 }
 
++ (void)noDealAvailableAlert:(UIViewController *)vc {
+    UIAlertController *alert;
+    UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"OK"
+                                                       style:UIAlertActionStyleDefault
+                                                     handler:^(UIAlertAction * _Nonnull action) {
+    }];
+    
+    alert = [UIAlertController alertControllerWithTitle:@"No Deals Found"
+                                                message:@"There are no current deals right now for this item."
+                                         preferredStyle:(UIAlertControllerStyleAlert)];
+    [alert addAction:okAction];
+    [vc presentViewController:alert animated:YES completion:nil];
+}
+
 @end
